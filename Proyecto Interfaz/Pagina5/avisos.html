@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avisos del Maestro</title>
+  <link rel="icon" type="image/png" href="../imagen/Logo.png">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body { background:#f5f8fb; font-family: Inter, system-ui; }
+    .wrap { max-width: 1100px; margin: 32px auto; padding: 0 18px; }
+    .card { background:#fff; border-radius:16px; padding:18px 20px; box-shadow: 0 8px 28px -6px rgba(0,32,80,0.12); margin-bottom:24px; }
+    .section-title { font-size: 20px; font-weight:700; margin:0 0 6px; color:#163149; }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    label { font-weight:600; font-size:13px; color:#2c3e50; }
+    input[type=text], textarea, select, input[type=datetime-local] { width:100%; padding:10px 12px; border:1px solid #d6e0ea; border-radius:10px; font-family:inherit; background:#fdfefe; }
+    textarea { resize:vertical; min-height:120px; }
+    .muted { font-size:12px; color:#607080; }
+    .actions { display:flex; gap:10px; justify-content:flex-end; margin-top:12px; }
+    .btn { border:0; border-radius:10px; padding:10px 15px; font-weight:600; cursor:pointer; font-size:13px; display:inline-flex; align-items:center; gap:6px; }
+    .btn-primary { background:#4a90e2; color:#fff; }
+    .btn-light { background:#e8f1fa; color:#1f3147; }
+    .hidden { display:none !important; }
+    .badge { display:inline-block; padding:4px 8px; border-radius:999px; font-size:11px; font-weight:600; }
+    .badge-green { background:#e6f7ef; color:#0b7a45; }
+    .badge-orange { background:#fff3e6; color:#a15c00; }
+    .badge-gray { background:#eef2f7; color:#425469; }
+    .aviso-item { border:1px solid #e4ebf2; border-radius:14px; padding:12px 14px; margin-top:10px; background:#fff; }
+    .aviso-header { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .aviso-title { font-weight:700; color:#132739; margin:0; font-size:16px; }
+    .aviso-meta { font-size:12px; color:#607080; }
+    .filters-inline { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
+    .chip { background:#eef4fa; color:#28527a; padding:6px 12px; border-radius:999px; font-size:12px; font-weight:600; cursor:pointer; }
+    .chip.active { background:#4a90e2; color:#fff; }
+  </style>
+</head>
+<body>
+  <div class="hero-cubes-bg">
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <h2 class="section-title"><i class="fas fa-bullhorn"></i> Crear aviso</h2>
+      <div class="row">
+        <div>
+          <label for="titulo">Título</label>
+          <input id="titulo" type="text" maxlength="200" placeholder="Ej. Recordatorio de entrega" />
+        </div>
+        <div>
+          <label for="fecha_programada">Fecha programada (opcional)</label>
+          <input id="fecha_programada" type="datetime-local" />
+          <div class="muted">Si la dejas vacía, se publica ahora.</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <label for="contenido">Contenido</label>
+        <textarea id="contenido" maxlength="5000" placeholder="Mensaje para tus estudiantes..."></textarea>
+      </div>
+      <div style="margin-top:12px;">
+        <label>Destino</label>
+        <div style="display:flex; gap:22px; margin-top:6px; flex-wrap:wrap;">
+          <label><input type="radio" name="target" value="general" checked /> General</label>
+          <label><input type="radio" name="target" value="clase" /> Por clase</label>
+          <label><input type="radio" name="target" value="estudiante" /> Por estudiante</label>
+        </div>
+      </div>
+      <div id="destino-clases" class="hidden" style="margin-top:10px;">
+        <label for="clase_ids">Selecciona clases</label>
+        <select id="clase_ids" multiple size="6" style="min-height:130px;"></select>
+        <div class="muted">Ctrl/Cmd para selección múltiple.</div>
+      </div>
+      <div id="destino-estudiantes" class="hidden" style="margin-top:10px;">
+        <label for="estudiante_ids">Selecciona estudiantes</label>
+        <select id="estudiante_ids" multiple size="8" style="min-height:170px;"></select>
+        <div class="muted">Se cargan desde tus clases activas.</div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-light" id="btn-limpiar"><i class="fas fa-eraser"></i> Limpiar</button>
+        <button class="btn btn-primary" id="btn-enviar"><i class="fas fa-paper-plane"></i> Enviar aviso</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title"><i class="fas fa-list"></i> Mis avisos</h2>
+      <div class="filters-inline">
+        <span class="chip active" data-filter="todos">Todos</span>
+        <span class="chip" data-filter="programado">Programados</span>
+        <span class="chip" data-filter="publicado">Publicados</span>
+      </div>
+      <div id="lista-avisos"></div>
+    </div>
+  </div>
+
+  <!-- Modal edición aviso -->
+  <div id="modal-editar-aviso" class="hidden" style="position:fixed; inset:0; background:rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; z-index:999;">
+    <div style="background:#fff; width:100%; max-width:520px; border-radius:18px; padding:22px 24px; box-shadow:0 10px 38px -6px rgba(0,0,0,0.25); position:relative;">
+      <h3 style="margin:0 0 14px; font-weight:700; font-size:19px; color:#163149;">Editar aviso</h3>
+      <input type="hidden" id="edit-aviso-id" />
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div>
+          <label style="font-size:12px; font-weight:600;">Título</label>
+          <input id="edit-titulo" type="text" maxlength="200" style="width:100%; padding:10px 12px; border:1px solid #d6e0ea; border-radius:10px;" />
+        </div>
+        <div>
+          <label style="font-size:12px; font-weight:600;">Contenido</label>
+          <textarea id="edit-contenido" maxlength="5000" style="width:100%; min-height:140px; padding:10px 12px; border:1px solid #d6e0ea; border-radius:10px; resize:vertical;"></textarea>
+        </div>
+        <div>
+          <label style="font-size:12px; font-weight:600;">Fecha programada (opcional)</label>
+          <input id="edit-fecha" type="datetime-local" style="width:100%; padding:10px 12px; border:1px solid #d6e0ea; border-radius:10px;" />
+          <div class="muted" style="margin-top:4px;">Vacío = vigente inmediata. Para limpiar fecha, borra el campo.</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:18px;">
+        <button id="btn-cancelar-edicion" class="btn btn-light" style="background:#e8f1fa; color:#132739;">Cancelar</button>
+        <button id="btn-guardar-edicion" class="btn btn-primary" style="background:#4a90e2; color:#fff;">Guardar cambios</button>
+      </div>
+      <button id="btn-cerrar-modal" style="position:absolute; top:10px; right:12px; background:transparent; border:0; font-size:20px; cursor:pointer; color:#607080;" title="Cerrar">×</button>
+    </div>
+  </div>
+
+  <script src="js/avisos.js"></script>
+</body>
+</html>

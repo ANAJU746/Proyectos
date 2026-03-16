@@ -1,0 +1,456 @@
+:root {
+    --primary-color: #83d8d4;
+    --secondary-color: #2c3e50;
+    --success-color: #27ae60;
+    --error-color: #e74c3c;
+    --text-color: #333;
+    --light-color: #fff;
+    --admin-color: #83d8d4;
+    --hover-color: #6bc5c0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('Fondo2.png') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header principal */
+.main-header {
+    background: rgba(255, 255, 255, 0.98);
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-placeholder {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--primary-color), var(--hover-color));
+    border-radius: 50%;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(131, 216, 212, 0.3);
+}
+
+.university-name {
+    font-size: 1.3rem;
+    color: var(--secondary-color);
+    margin: 0;
+    font-weight: 600;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.admin-badge {
+    background: var(--admin-color);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(131, 216, 212, 0.3);
+}
+
+.admin-badge i {
+    font-size: 1.1rem;
+}
+
+/* Contenedor principal */
+.container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    margin-top: 70px;
+}
+
+.login-box {
+    background: rgba(255, 255, 255, 0.98);
+    max-width: 450px;
+    width: 100%;
+    padding: 45px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.admin-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--hover-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 20px rgba(131, 216, 212, 0.4);
+}
+
+.admin-icon i {
+    font-size: 2.5rem;
+    color: white;
+}
+
+.login-header h2 {
+    color: var(--secondary-color);
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.login-header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Grupos de entrada */
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-color);
+    background: white;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(131, 216, 212, 0.1);
+}
+
+.input-group input:focus + i {
+    color: var(--primary-color);
+}
+
+/* Secci√≥n de recordar */
+.remember-section {
+    margin-bottom: 25px;
+}
+
+.remember-section label {
+    display: flex;
+    align-items: center;
+    color: #666;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.remember-section input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+/* Bot√≥n de login */
+.login-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--primary-color), var(--hover-color));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(131, 216, 212, 0.4);
+}
+
+.login-btn:hover {
+    background: linear-gradient(135deg, var(--hover-color), #5ab8b3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(131, 216, 212, 0.5);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.login-btn i {
+    font-size: 1.1rem;
+}
+
+/* Mensaje de error */
+.error-message {
+    color: var(--error-color);
+    background: rgba(231, 76, 60, 0.1);
+    text-align: center;
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    min-height: 20px;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.error-message:empty {
+    display: none;
+}
+
+/* Secci√≥n de soporte */
+.support-section {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.support-section a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.support-section a:hover {
+    color: var(--hover-color);
+    text-decoration: underline;
+}
+
+.support-section i {
+    font-size: 1rem;
+}
+
+/* Footer */
+.main-footer {
+    background: rgba(255, 255, 255, 0.95);
+    text-align: center;
+    padding: 15px;
+    color: #666;
+    font-size: 0.85rem;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-header {
+        height: 60px;
+        padding: 0 1rem;
+    }
+    
+    .university-name {
+        font-size: 1.1rem;
+    }
+    
+    .admin-badge {
+        padding: 6px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .login-box {
+        padding: 30px 25px;
+        margin: 10px;
+    }
+    
+    .admin-icon {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .admin-icon i {
+        font-size: 2rem;
+    }
+    
+    .login-header h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-left h1 {
+        font-size: 0.95rem;
+    }
+    
+    .logo-placeholder {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .admin-badge span {
+        display: none;
+    }
+}
+/* ============================================
+   ANIMACI”N DE PARTÕCULAS DE FONDO
+   ============================================ */
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.circle-container {
+    position: absolute;
+    border-radius: 50%;
+}
+
+.circle-container .circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    mix-blend-mode: screen;
+    background-image: radial-gradient(
+        rgba(131, 216, 212, 0.8),
+        rgba(131, 216, 212, 0.4) 10%,
+        rgba(131, 216, 212, 0.1) 40%,
+        rgba(131, 216, 212, 0.05) 60%,
+        transparent
+    );
+    animation: fade-frames 4s infinite, scale-frames 2s infinite;
+}
+
+@keyframes fade-frames {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+@keyframes scale-frames {
+    0% { transform: scale3d(0.4, 0.4, 1); }
+    50% { transform: scale3d(2.2, 2.2, 1); }
+    100% { transform: scale3d(0.4, 0.4, 1); }
+}
+
+.circle-container:nth-child(1) {
+    width: 6vw; height: 6vw;
+    animation: move-frames-1 28s 0.5s infinite;
+}
+@keyframes move-frames-1 {
+    from { transform: translate3d(15vw, 105vh, 0); }
+    to { transform: translate3d(75vw, -10vh, 0); }
+}
+
+.circle-container:nth-child(2) {
+    width: 8vw; height: 8vw;
+    animation: move-frames-2 32s 1s infinite;
+}
+@keyframes move-frames-2 {
+    from { transform: translate3d(85vw, 110vh, 0); }
+    to { transform: translate3d(25vw, -15vh, 0); }
+}
+
+.circle-container:nth-child(3) {
+    width: 5vw; height: 5vw;
+    animation: move-frames-3 25s 0.2s infinite;
+}
+@keyframes move-frames-3 {
+    from { transform: translate3d(50vw, 108vh, 0); }
+    to { transform: translate3d(10vw, -8vh, 0); }
+}
+
+.circle-container:nth-child(4) {
+    width: 7vw; height: 7vw;
+    animation: move-frames-4 30s 1.5s infinite;
+}
+@keyframes move-frames-4 {
+    from { transform: translate3d(30vw, 112vh, 0); }
+    to { transform: translate3d(90vw, -12vh, 0); }
+}
+
+.circle-container:nth-child(5) {
+    width: 9vw; height: 9vw;
+    animation: move-frames-5 35s 0.8s infinite;
+}
+@keyframes move-frames-5 {
+    from { transform: translate3d(70vw, 105vh, 0); }
+    to { transform: translate3d(40vw, -18vh, 0); }
+}
+
+.circle-container:nth-child(6) {
+    width: 6.5vw; height: 6.5vw;
+    animation: move-frames-6 27s 2s infinite;
+}
+@keyframes move-frames-6 {
+    from { transform: translate3d(5vw, 115vh, 0); }
+    to { transform: translate3d(60vw, -5vh, 0); }
+}
+
+.circle-container:nth-child(7) {
+    width: 7.5vw; height: 7.5vw;
+    animation: move-frames-7 33s 0.3s infinite;
+}
+@keyframes move-frames-7 {
+    from { transform: translate3d(95vw, 107vh, 0); }
+    to { transform: translate3d(20vw, -20vh, 0); }
+}
+
+.circle-container:nth-child(8) {
+    width: 5.5vw; height: 5.5vw;
+    animation: move-frames-8 26s 1.2s infinite;
+}
+@keyframes move-frames-8 {
+    from { transform: translate3d(45vw, 110vh, 0); }
+    to { transform: translate3d(85vw, -8vh, 0); }
+}

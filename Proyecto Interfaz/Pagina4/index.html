@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrativo</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <!-- Tipografía Inter para un estilo moderno y consistente -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <div class="profile-image" style="cursor: pointer;" id="profileImageContainer" title="Clic para cambiar foto">
+                <img src="https://via.placeholder.com/110" alt="Admin Profile" id="adminProfileImage">
+            </div>
+            <h3 id="adminName">Administrador</h3>
+            <span class="role-badge">Admin</span>
+            <input type="file" id="fotoInput" accept="image/*" style="display: none;">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="estudiantes.html"><i class="fas fa-user-graduate"></i> Estudiantes</a></li>
+                <li><a href="profesores.html"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
+                <li><a href="clases.html"><i class="fas fa-book-open"></i> Clases</a></li>
+                <li><a href="planes-estudio.html"><i class="fas fa-graduation-cap"></i> Planes de Estudio</a></li>
+                <li><a href="mensajes.html"><i class="fas fa-envelope"></i> Mensajes</a></li>
+                
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <header>
+            <h2>Dashboard Administrativo</h2>
+            <div class="header-right">
+                <span class="date">22 de octubre, 2025</span>
+                <button class="profile-btn">Mi Perfil</button>
+                <button class="profile-btn" id="adminLogoutBtn" title="Cerrar sesión">
+                    Cerrar Sesión
+                </button>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon students"><i class="fas fa-user-graduate"></i></div>
+                    <div>
+                        <h3>Total Estudiantes</h3>
+                        <span class="trend">Cargando...</span>
+                    </div>
+                </div>
+                <p class="number" id="totalEstudiantes" data-target="0">0</p>
+                <div class="progress"><div class="progress-bar" id="estudiantesBar" style="width:0%"></div></div>
+            </div>
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon teachers"><i class="fas fa-chalkboard-teacher"></i></div>
+                    <div>
+                        <h3>Total Profesores</h3>
+                        <span class="trend">Cargando...</span>
+                    </div>
+                </div>
+                <p class="number" id="totalProfesores" data-target="0">0</p>
+                <div class="progress"><div class="progress-bar" id="profesoresBar" style="width:0%"></div></div>
+            </div>
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon classes"><i class="fas fa-book-open"></i></div>
+                    <div>
+                        <h3>Clases Activas</h3>
+                        <span class="trend">Cargando...</span>
+                    </div>
+                </div>
+                <p class="number" id="totalClases" data-target="0">0</p>
+                <div class="progress"><div class="progress-bar" id="clasesBar" style="width:0%"></div></div>
+            </div>
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-icon avg"><i class="fas fa-chart-line"></i></div>
+                    <div>
+                        <h3>Promedio General </h3>
+                        <span class="trend">Cargando...</span>
+                    </div>
+                </div>
+                <p class="number" id="promedioGeneral" data-target="0">0.00</p>
+                <div class="progress"><div class="progress-bar" id="promedioBar" style="width:0%"></div></div>
+            </div>
+        </div>
+
+        <section class="recent-activity">
+            <h3>Actividad Reciente</h3>
+            <div class="activity-list" id="actividadReciente">
+                <div class="activity-item">
+                    <span class="time">--:--</span>
+                    <p>Cargando actividad reciente...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- jsPDF y autoTable para exportar PDF -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
+    <script src="shared-admin.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

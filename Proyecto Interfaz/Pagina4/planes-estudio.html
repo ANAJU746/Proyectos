@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes de Estudio - Panel Administrativo</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <div class="profile-image" style="cursor: pointer;" id="profileImageContainer" title="Clic para cambiar foto">
+                <img src="https://via.placeholder.com/110" alt="Admin Profile" id="adminProfileImage">
+            </div>
+            <h3 id="adminName">Administrador</h3>
+            <span class="role-badge">Administrador del Sistema</span>
+            <input type="file" id="fotoInput" accept="image/*" style="display: none;">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="estudiantes.html"><i class="fas fa-user-graduate"></i> Estudiantes</a></li>
+                <li><a href="profesores.html"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
+                <li><a href="clases.html"><i class="fas fa-book-open"></i> Clases</a></li>
+                <li><a href="planes-estudio.html" class="active"><i class="fas fa-graduation-cap"></i> Planes de Estudio</a></li>
+                <li><a href="mensajes.html"><i class="fas fa-envelope"></i> Mensajes</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <header>
+            <h2>Planes de Estudio</h2>
+            <div class="header-right">
+                <span class="date">26 de noviembre, 2025</span>
+                <button class="profile-btn">Mi Perfil</button>
+                <button class="profile-btn" id="adminLogoutBtn" title="Cerrar sesión">
+                    Cerrar Sesión
+                </button>
+            </div>
+        </header>
+
+        <div class="actions-bar">
+            <button class="action-btn" id="btnNuevoPlan">
+                <i class="fas fa-plus"></i> Nuevo Plan de Estudio
+            </button>
+            <div class="search-bar">
+                <input type="text" id="searchPlan" placeholder="Buscar plan de estudio...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="plans-grid">
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre del Plan</th>
+                        <th>Carrera</th>
+                        <th>Duración</th>
+                        <th>Créditos</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="planesTableBody">
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 2rem;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-color);"></i>
+                            <p style="margin-top: 1rem; color: var(--text-secondary);">Cargando planes de estudio...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Modal para crear/editar plan de estudio -->
+    <div id="modalPlan" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="modalPlanTitulo">Nuevo Plan de Estudio</h3>
+                <span class="close" id="closePlanModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formPlan">
+                    <input type="hidden" id="planId">
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="planNombre">Nombre del Plan *</label>
+                            <input type="text" id="planNombre" required placeholder="Ej: Plan Ingeniería en Sistemas 2024">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="planCarrera">Carrera *</label>
+                            <input type="text" id="planCarrera" required placeholder="Ej: Ingeniería en Sistemas Computacionales">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="planCodigo">Código</label>
+                            <input type="text" id="planCodigo" placeholder="Ej: ISC-2024">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="planSemestres">Duración (Semestres) *</label>
+                            <input type="number" id="planSemestres" required min="1" max="12" value="9">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="planCreditos">Créditos Totales</label>
+                            <input type="number" id="planCreditos" min="0" placeholder="Ej: 240">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="planEstado">Estado *</label>
+                            <select id="planEstado" required>
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="planDescripcion">Descripción</label>
+                        <textarea id="planDescripcion" rows="3" placeholder="Descripción del plan de estudios"></textarea>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="btnCancelarPlan">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btnGuardarPlan">Guardar Plan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para gestionar materias del plan -->
+    <div id="modalMaterias" class="modal">
+        <div class="modal-content modal-xlarge">
+            <div class="modal-header">
+                <h3 id="modalMateriasTitulo">Materias del Plan de Estudio</h3>
+                <span class="close" id="closeMateriasModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="materias-toolbar">
+                    <button class="btn btn-primary" id="btnAgregarMateria">
+                        <i class="fas fa-plus"></i> Agregar Materia
+                    </button>
+                    <div class="filter-group">
+                        <label for="filtroSemestre">Filtrar por Semestre:</label>
+                        <select id="filtroSemestre">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table id="materiasTable">
+                        <thead>
+                            <tr>
+                                <th>Materia</th>
+                                <th>Código</th>
+                                <th>Semestre</th>
+                                <th>Créditos</th>
+                                <th>Tipo</th>
+                                <th>Orden</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="materiasTableBody">
+                            <tr>
+                                <td colspan="7" style="text-align: center;">No hay materias asignadas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para agregar/editar materia al plan -->
+    <div id="modalAgregarMateria" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalAgregarMateriaTitulo">Agregar Materia al Plan</h3>
+                <span class="close" id="closeAgregarMateriaModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formAgregarMateria">
+                    <input type="hidden" id="materiaRelacionId">
+                    <input type="hidden" id="materiaPlanId">
+                    
+                    <div class="form-group">
+                        <label for="materiaClaseId">Materia *</label>
+                        <select id="materiaClaseId" required>
+                            <option value="">Seleccione una materia...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="materiaSemestre">Semestre *</label>
+                            <input type="number" id="materiaSemestre" required min="1" max="12" value="1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="materiaCreditos">Créditos *</label>
+                            <input type="number" id="materiaCreditos" required min="1" max="10" value="3">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="materiaObligatoria">Tipo *</label>
+                            <select id="materiaObligatoria" required>
+                                <option value="1">Obligatoria</option>
+                                <option value="0">Optativa</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="materiaOrden">Orden</label>
+                            <input type="number" id="materiaOrden" min="0" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="btnCancelarMateria">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btnGuardarMateria">Agregar Materia</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.28/dist/jspdf.plugin.autotable.min.js"></script>
+    <script src="shared-admin.js"></script>
+    <script src="planes-estudio.js"></script>
+</body>
+</html>

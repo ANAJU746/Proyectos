@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Escolar - Login</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Fondo de partículas animadas -->
+    <div class="background">
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+    </div>
+
+    <div id="splash-overlay" class="splash-overlay">
+        <img src="../imagen/Logogif.gif" alt="Logo Universidad" class="splash-logo" id="splashLogo">
+    </div>
+    <header class="main-header">
+        <div class="header-left">
+            <div class="logo-container">
+                
+                <img src="../imagen/Logo.png" alt="Logo Universidad" class="logo-img">
+            </div>
+            <h1 class="university-name">Universidad de Ciencias de los Alpes</h1>
+        </div>
+        <div class="header-right">
+            <a href="/Pagina3/index.html" class="admin-text">Administrativo</a>
+        </div>
+    </header>
+    <div class="container">
+        <div class="promo-banner" aria-label="Aviso institucional">
+            <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+            Portal Educativo 2025 · Innovación y excelencia académica
+        </div>
+        <div class="login-box">
+            <div class="login-header">
+                <h2>Sistema Escolar</h2>
+                <p>Bienvenido al Portal Educativo</p>
+            </div>
+            <div class="login-content">
+                <form id="loginForm">
+                    <div class="user-type">
+                        <button type="button" class="user-btn active" data-type="estudiante">
+                            <i class="fas fa-user-graduate"></i> Estudiante
+                        </button>
+                        <button type="button" class="user-btn" data-type="maestro">
+                            <i class="fas fa-chalkboard-teacher"></i> Maestro
+                        </button>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="username" placeholder="Usuario" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Contraseña" required>
+                    </div>
+                    <div class="remember-forgot">
+                        <label>
+                            <input type="checkbox"> Recordarme
+                        </label>
+                        <a href="#" id="forgotLink">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <button type="submit" class="login-btn">
+                        Iniciar Sesión <i class="fas fa-sign-in-alt"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Recuperación de contraseña -->
+    <div id="recoverModal" class="recover-overlay" aria-hidden="true" role="dialog" aria-labelledby="recoverTitle">
+        <div class="recover-card" role="document">
+            <div class="recover-header">
+                <h3 id="recoverTitle">Recuperar acceso</h3>
+                <button class="recover-close" id="recoverClose" aria-label="Cerrar">&times;</button>
+            </div>
+            <form id="recoverForm" class="recover-body">
+                <input type="hidden" id="recoverTipo" value="estudiante">
+                <div class="form-row">
+                    <label id="lblIdentificacion" for="recoverIdent">Matrícula</label>
+                    <input type="text" id="recoverIdent" required placeholder="Ej: 2023001">
+                </div>
+                <div class="form-row">
+                    <label for="recoverCorreo">Correo de contacto</label>
+                    <input type="email" id="recoverCorreo" required placeholder="correo@ejemplo.com">
+                </div>
+                <div class="form-row">
+                    <label for="recoverTel">Teléfono</label>
+                    <input type="tel" id="recoverTel" required placeholder="(999) 123-4567">
+                </div>
+                <div class="form-row">
+                    <label for="recoverNota">Comentario (opcional)</label>
+                    <textarea id="recoverNota" rows="3" placeholder="Cuéntanos el problema brevemente"></textarea>
+                </div>
+                <div class="recover-actions">
+                    <button type="button" class="cancel-btn" id="recoverCancel">Cancelar</button>
+                    <button type="submit" class="save-btn" id="recoverSubmit">Enviar solicitud</button>
+                </div>
+                <p class="recover-hint" id="recoverHint">Se enviará al administrador. Responderemos a tu correo.</p>
+            </form>
+        </div>
+    </div>
+
+    <footer class="social-footer" aria-label="Redes sociales de la escuela">
+        <div class="social-inner">
+            <span class="follow-text">Síguenos</span>
+            <nav class="social-links" aria-label="Enlaces a redes sociales">
+                <a href="#" class="social-btn" aria-label="Facebook" title="Facebook">
+                    <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="social-btn" aria-label="X (Twitter)" title="X (Twitter)">
+                    <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="social-btn" aria-label="Instagram" title="Instagram">
+                    <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+                </a>
+                <a href="#" class="social-btn" aria-label="YouTube" title="YouTube">
+                    <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+                </a>
+            </nav>
+        </div>
+    </footer>
+    <script src="js/script.js"></script>
+</body>
+</html>

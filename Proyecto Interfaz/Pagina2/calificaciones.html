@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calificaciones - Sistema Escolar</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="animated-background-wrapper">
+        <ul class="floating-squares">
+            <li></li><li></li><li></li><li></li><li></li>
+            <li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Sistema Escolar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item d-none d-lg-block me-2">
+                        <span class="navbar-text small text-white-50" id="navbarStudentName"></span>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <button id="logoutBtn" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-list-ol"></i> Calificaciones</h2>
+            <a href="index.html" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Volver al Inicio
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-graduation-cap"></i> Calificaciones por Materia</h5>
+                <div class="d-flex gap-2">
+                    <button id="download-pdf" class="btn btn-light btn-sm"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle" id="grades-table">
+                        <thead>
+                            <tr>
+                                <th>Materia</th>
+                                <th>Profesor</th>
+                                <th class="text-center">Puntaje Total</th>
+                                <th>Observaciones</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Filas generadas por JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-reply"></i> Respuestas de Profesores a tus Mensajes</h5>
+                <span id="badge-nuevas" class="badge bg-warning text-dark d-none">Nuevas</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle" id="replies-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Materia</th>
+                                <th>Tu mensaje</th>
+                                <th>Respuesta del profesor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Filas generadas por JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="no-replies" class="text-muted">No tienes respuestas todavía.</div>
+            </div>
+        </div>
+
+    <!-- Modal para editar observaciones (local opcional) -->
+        <div class="modal fade" id="obsModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Observaciones</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Materia</label>
+                            <input type="text" id="modal-materia" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Observación</label>
+                            <textarea id="modal-observacion" class="form-control" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="modal-save" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para enviar mensaje al profesor sobre una calificación -->
+        <div class="modal fade" id="questionModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="fas fa-envelope"></i> Mensaje al profesor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Materia</label>
+                            <input type="text" id="q-materia" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mensaje</label>
+                            <textarea id="q-mensaje" class="form-control" rows="4" placeholder="Escribe tu duda o comentario para el profesor"></textarea>
+                        </div>
+                        <input type="hidden" id="q-clase-id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="question-send" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <!-- jsPDF y AutoTable para exportar PDF de calificaciones -->
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Navbar: saludo y logout
+        (function(){
+            try {
+                const u = JSON.parse(sessionStorage.getItem('user')||'{}');
+                const ns = document.getElementById('navbarStudentName');
+                if (u && u.nombre && ns) ns.textContent = `Hola, ${u.nombre}`;
+            } catch(_) {}
+            const lb = document.getElementById('logoutBtn');
+            if (lb) lb.addEventListener('click', ()=>{ sessionStorage.clear(); window.location.href = '/Pagina1/index.html'; });
+        })();
+    </script>
+</body>
+</html>

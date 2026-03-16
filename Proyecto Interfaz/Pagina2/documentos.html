@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentos - Sistema Escolar</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .document-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .document-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .status-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .upload-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        .upload-zone:hover {
+            border-color: #0d6efd;
+            background-color: #f1f8ff;
+        }
+        .document-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .document-item {
+            transition: background-color 0.3s ease;
+        }
+        .document-item:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background-wrapper">
+        <ul class="floating-squares">
+            <li></li><li></li><li></li><li></li><li></li>
+            <li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Sistema Escolar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item d-none d-lg-block me-2">
+                        <span class="navbar-text small text-white-50" id="navbarStudentName"></span>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <button id="logoutBtn" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-folder-open"></i> Documentos</h2>
+            <a href="index.html" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Volver al Inicio
+            </a>
+        </div>
+
+        <!-- Zona de carga de documentos -->
+        <div class="upload-zone mb-4" id="uploadZone">
+            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+            <h4>Cargar Nuevo Documento</h4>
+            <p class="text-muted">Arrastra y suelta archivos aquí o haz clic para seleccionar</p>
+            <div class="row g-2 justify-content-center">
+                <div class="col-auto">
+                    <select id="docTipo" class="form-select">
+                        <option value="Documento">Documento</option>
+                        <option value="Kardex">Kardex</option>
+                        <option value="Constancia">Constancia</option>
+                        <option value="Servicio Social">Servicio Social</option>
+                        <option value="Título">Título</option>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <button id="btnSelectFile" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Seleccionar Archivo
+                    </button>
+                    <input type="file" id="docFile" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx" hidden>
+                </div>
+            </div>
+            <div id="uploadHint" class="text-muted mt-2" style="font-size: 0.9rem;"></div>
+        </div>
+
+        <div class="row">
+            <!-- Documentos Académicos -->
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0"><i class="fas fa-graduation-cap"></i> Documentos Académicos</h5>
+                    </div>
+                    <div id="docs-dinamicos" class="card-body document-list"></div>
+                </div>
+
+                <!-- Documentos Pendientes -->
+                <div class="card">
+                    <div class="card-header bg-warning">
+                        <h5 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Documentos Pendientes</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="document-item d-flex align-items-center p-3 border-bottom">
+                            <i class="fas fa-file-upload text-warning fa-2x me-3"></i>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">Servicio Social - Documentación Final</h6>
+                                <small class="text-muted">Fecha límite: 30/11/2025</small>
+                            </div>
+                            <button class="btn btn-warning btn-sm">
+                                <i class="fas fa-upload"></i> Subir
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Resumen</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6>Documentos Totales</h6>
+                            <h2 id="docs-requeridos">0</h2>
+                        </div>
+                        <div class="mb-3">
+                            <label>Estado de Documentación</label>
+                            <div class="progress mb-2">
+                                <div id="progress-documentos" class="progress-bar bg-success" style="width:0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                            </div>
+                            <small class="text-muted"><span id="docs-entregados">0</span> de <span id="docs-requeridos-inline">0</span> documentos entregados</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-clock"></i> Actividad Reciente</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="actividad-reciente" class="timeline"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            // Navbar: saludo y logout
+            (function(){
+                try {
+                    const u = JSON.parse(sessionStorage.getItem('user')||'{}');
+                    const ns = document.getElementById('navbarStudentName');
+                    if (u && u.nombre && ns) ns.textContent = `Hola, ${u.nombre}`;
+                } catch(_) {}
+                const lb = document.getElementById('logoutBtn');
+                if (lb) lb.addEventListener('click', ()=>{ sessionStorage.clear(); window.location.href = '/Pagina1/index.html'; });
+            })();
+
+            // Integración de subida de documentos
+            document.addEventListener('DOMContentLoaded', function(){
+                const btn = document.getElementById('btnSelectFile');
+                const input = document.getElementById('docFile');
+                const tipoSel = document.getElementById('docTipo');
+                const hint = document.getElementById('uploadHint');
+                const zone = document.getElementById('uploadZone');
+                let user = null; try { user = JSON.parse(sessionStorage.getItem('user')); } catch {}
+                if (!user || user.role !== 'estudiante') return;
+
+                const requiredTypes = ['Documento','Kardex','Constancia','Servicio Social','Título'];
+
+                function calcularResumen(documentos){
+                    // Contar documentos subidos que pertenecen al conjunto requerido (no sólo tipos únicos)
+                    const entregados = documentos.filter(d => requiredTypes.includes(d.tipo)).length;
+                    const requeridos = requiredTypes.length;
+                    const porcentaje = requeridos === 0 ? 0 : Math.round((entregados / requeridos)*100);
+                    const totalSpan = document.getElementById('docs-requeridos');
+                    const totalInline = document.getElementById('docs-requeridos-inline');
+                    const entregadosSpan = document.getElementById('docs-entregados');
+                    if (totalSpan) totalSpan.textContent = requeridos;
+                    if (totalInline) totalInline.textContent = requeridos;
+                    if (entregadosSpan) entregadosSpan.textContent = entregados;
+                    const pb = document.getElementById('progress-documentos');
+                    if (pb){
+                        pb.style.width = porcentaje+'%';
+                        pb.setAttribute('aria-valuenow', porcentaje);
+                        pb.textContent = porcentaje+'%';
+                        pb.classList.toggle('bg-success', porcentaje===100);
+                        pb.classList.toggle('bg-warning', porcentaje<100 && porcentaje>=50);
+                        pb.classList.toggle('bg-danger', porcentaje<50);
+                    }
+                }
+
+                function actualizarActividad(documentos){
+                    const contAct = document.getElementById('actividad-reciente');
+                    if (!contAct) return;
+                    contAct.innerHTML='';
+                    documentos.slice(0,5).forEach(d=>{
+                        const div = document.createElement('div');
+                        div.className='mb-3';
+                        div.innerHTML = `<small class="text-muted">${d.creado_at?new Date(d.creado_at).toLocaleDateString():''}</small><p class="mb-1">${d.tipo}: ${(d.nombre_original||'archivo')}</p>`;
+                        contAct.appendChild(div);
+                    });
+                    if(documentos.length===0){
+                        const div=document.createElement('div');
+                        div.className='text-muted';
+                        div.textContent='Sin actividad reciente';
+                        contAct.appendChild(div);
+                    }
+                }
+
+                function refreshList(){
+                    if (typeof fetch === 'function') {
+                        fetch(`/api/estudiantes/${user.id}/documentos`).then(r=>r.json()).then(data => {
+                            const cont = document.getElementById('docs-dinamicos');
+                            if (!cont) return;
+                            cont.innerHTML = '';
+                            (data.documentos||[]).forEach(d => {
+                                const item = document.createElement('div');
+                                item.className = 'document-item d-flex align-items-center p-3 border-bottom';
+                                item.innerHTML = `
+                                    <i class="fas fa-file-alt text-primary fa-2x me-3"></i>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">${d.tipo || 'Documento'}</h6>
+                                        <small class="text-muted">${(d.nombre_original|| (d.archivo_url? d.archivo_url.split('/').pop() : 'archivo'))} · ${d.creado_at ? new Date(d.creado_at).toLocaleString() : ''}</small>
+                                    </div>
+                                    <div class="btn-group">
+                                        <a class="btn btn-outline-primary btn-sm" href="${d.archivo_url}" target="_blank"><i class="fas fa-download"></i></a>
+                                        <a class="btn btn-outline-secondary btn-sm" href="${d.archivo_url}" target="_blank"><i class="fas fa-eye"></i></a>
+                                    </div>`;
+                                cont.appendChild(item);
+                            });
+                            if (!data.documentos || data.documentos.length === 0) {
+                                cont.innerHTML = '<div class="text-center text-muted p-4">Sin documentos registrados.</div>';
+                            }
+                            calcularResumen(data.documentos||[]);
+                            actualizarActividad(data.documentos||[]);
+                        }).catch(()=>{});
+                    }
+                }
+
+                function setHint(msg, good){
+                    if (!hint) return;
+                    hint.textContent = msg || '';
+                    hint.style.color = good ? '#198754' : '#6c757d';
+                }
+
+                if (btn && input) {
+                    btn.addEventListener('click', () => input.click());
+                    input.addEventListener('change', async function(){
+                        const file = input.files && input.files[0];
+                        if (!file) return;
+                        setHint(`Subiendo: ${file.name} (${Math.round(file.size/1024)} KB)...`);
+                        const fd = new FormData();
+                        fd.append('file', file);
+                        fd.append('tipo', (tipoSel && tipoSel.value) || 'Documento');
+                        try {
+                            const resp = await fetch(`/api/estudiantes/${user.id}/documentos`, { method: 'POST', body: fd });
+                            const data = await resp.json().catch(()=>({}));
+                            if (!resp.ok || !data.ok) {
+                                setHint('No se pudo subir el documento');
+                                alert(data.error || 'Error al subir');
+                                return;
+                            }
+                            setHint('Documento subido correctamente', true);
+                            input.value = '';
+                            refreshList();
+                        } catch (e) {
+                            setHint('Error de conexión');
+                        }
+                    });
+                }
+
+                // Arrastrar y soltar (opcional)
+                if (zone && input) {
+                    zone.addEventListener('dragover', e => { e.preventDefault(); zone.style.borderColor = '#0d6efd'; });
+                    zone.addEventListener('dragleave', e => { zone.style.borderColor = '#dee2e6'; });
+                    zone.addEventListener('drop', e => { e.preventDefault(); zone.style.borderColor = '#dee2e6'; if (e.dataTransfer.files && e.dataTransfer.files[0]) { input.files = e.dataTransfer.files; input.dispatchEvent(new Event('change')); } });
+                }
+
+                // Cargar lista inicial al abrir la página
+                refreshList();
+
+            });
+        </script>
+</body>
+</html>

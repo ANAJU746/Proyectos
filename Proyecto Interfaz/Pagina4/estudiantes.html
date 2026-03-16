@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Estudiantes - Administrador Escolar</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <div class="profile-image" style="cursor: pointer;" id="profileImageContainer" title="Clic para cambiar foto">
+                <img src="https://via.placeholder.com/110" alt="Admin Profile" id="adminProfileImage">
+            </div>
+            <h3 id="adminName">Administrador</h3>
+            <span class="role-badge">Administrador del Sistema</span>
+            <input type="file" id="fotoInput" accept="image/*" style="display: none;">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="estudiantes.html" class="active"><i class="fas fa-user-graduate"></i> Estudiantes</a></li>
+                <li><a href="profesores.html"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
+                <li><a href="clases.html"><i class="fas fa-book-open"></i> Clases</a></li>
+                <li><a href="planes-estudio.html"><i class="fas fa-graduation-cap"></i> Planes de Estudio</a></li>
+                <li><a href="mensajes.html"><i class="fas fa-envelope"></i> Mensajes</a></li>
+               
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <header>
+            <h2>Estudiantes</h2>
+            <div class="header-right">
+                <span class="date">22 de octubre, 2025</span>
+                <button class="profile-btn">Mi Perfil</button>
+                <button class="profile-btn" id="adminLogoutBtn" title="Cerrar sesión">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <div class="actions-bar">
+            <button class="action-btn" id="newStudentBtn"><i class="fas fa-plus"></i> Nuevo Estudiante</button>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar estudiante...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="students-grid">
+            <div class="group-filters" id="groupFilters" aria-label="Filtrar por grupo">
+                <span class="label"><i class="fas fa-layer-group"></i> Grupos:</span>
+              
+            </div>
+            <table class="students-table">
+                <thead>
+                    <tr>
+                        <th>Matrícula</th>
+                        <th>Nombre</th>
+                        <th>Grado</th>
+                        <th>Grupo</th>
+                        <th>Promedio</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsBody"></tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button><i class="fas fa-chevron-left"></i></button>
+            <span class="page-number active">1</span>
+            <span class="page-number">2</span>
+            <span class="page-number">3</span>
+            <button><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        
+        <div id="docsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Documentos del Estudiante</h3>
+                    <button class="close-docs-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="docsList" class="document-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para nuevo/editar estudiante -->
+        <div id="studentModal" class="modal">
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h3 id="modalTitle">Nuevo Estudiante</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="studentForm">
+                        <input type="hidden" id="studentId">
+                        <input type="hidden" id="editMode" value="false">
+                        
+                        <!-- Información Básica -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-user"></i> Información Básica</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="matricula">Matrícula *</label>
+                                    <input type="text" id="matricula" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nombre">Nombre Completo *</label>
+                                    <input type="text" id="nombre" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="curp">CURP</label>
+                                    <input type="text" id="curp" placeholder="CURP del estudiante" maxlength="18">
+                                    <small class="help">Se usará para verificar la identidad</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                                    <input type="date" id="fecha_nacimiento">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="lugar_nacimiento">Lugar de Nacimiento</label>
+                                <input type="text" id="lugar_nacimiento" placeholder="Ciudad, Estado">
+                            </div>
+                        </div>
+
+                        <!-- Información de Contacto -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-envelope"></i> Información de Contacto</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="correo">Correo Institucional</label>
+                                    <input type="email" id="correo" placeholder="correo@institucion.edu">
+                                </div>
+                                <div class="form-group">
+                                    <label for="telefono">Teléfono</label>
+                                    <input type="tel" id="telefono" placeholder="(999) 123-4567">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información Académica -->
+                        <div class="form-section">
+                            <h4><i class="fas fa-graduation-cap"></i> Información Académica</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="grado">Grado/Semestre *</label>
+                                    <select id="grado" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="1">1°</option>
+                                        <option value="2">2°</option>
+                                        <option value="3">3°</option>
+                                        <option value="4">4°</option>
+                                        <option value="5">5°</option>
+                                        <option value="6">6°</option>
+                                        <option value="7">7°</option>
+                                        <option value="8">8°</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="grupo">Grupo *</label>
+                                    <select id="grupo" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="carrera">Carrera</label>
+                                    <input type="text" id="carrera" placeholder="Ej: Ingeniería en Sistemas">
+                                </div>
+                                <div class="form-group">
+                                    <label for="plan_estudios">Plan de Estudios</label>
+                                    <input type="text" id="plan_estudios" placeholder="Ej: 2024">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="especialidad">Especialidad Académica</label>
+                                    <input type="text" id="especialidad" placeholder="Especialidad">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tutor">Tutor Académico</label>
+                                    <input type="text" id="tutor" placeholder="Nombre del tutor">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="promedio">Promedio</label>
+                                    <input type="number" id="promedio" step="0.01" min="0" max="10" placeholder="9.5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="estado">Estado</label>
+                                    <select id="estado">
+                                        <option value="activo">Activo</option>
+                                        <option value="inactivo">Inactivo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="cancel-btn">Cancelar</button>
+                            <button type="submit" class="save-btn"><i class="fas fa-save"></i> Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="shared-admin.js"></script>
+    <script src="estudiantes.js"></script>
+</body>
+</html>

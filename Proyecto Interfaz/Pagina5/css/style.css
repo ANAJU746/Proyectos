@@ -1,0 +1,116 @@
+:root{
+  /* Paleta alineada al admin (Pagina4/styles.css) */
+  --primary-color:#4a90e2;
+  --secondary-color:#6bb6ff;
+  --accent-color:#89cff0;
+  --success-color:#48bb78;
+  --warning-color:#ed8936;
+  --danger-color:#f56565;
+  --background-color:#fafbfc;
+  --card:#ffffff;
+  --text-color:#2d3748;
+  --text-secondary:#718096;
+  --border:#e8edf2;
+  --muted:#718096;
+}
+*{box-sizing:border-box;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif}
+body{margin:0;background:var(--background-color);color:var(--text-color)}
+/* ==== Fondo animado cubos (adaptado) ==== */
+.hero-cubes-bg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:#ffffff}
+.hero-cubes-bg .cube{position:absolute;top:80vh;left:45vw;width:12px;height:12px;border:1px solid #b9d6ff;transform-origin:top left;transform:scale(0) rotate(0deg) translate(-50%,-50%);animation:cubeFloat 14s ease-in forwards infinite}
+.hero-cubes-bg .cube:nth-child(2n){border-color:#a7ccff}
+.hero-cubes-bg .cube:nth-child(2){animation-delay:2s;left:25vw;top:40vh}
+.hero-cubes-bg .cube:nth-child(3){animation-delay:4s;left:75vw;top:52vh}
+.hero-cubes-bg .cube:nth-child(4){animation-delay:6s;left:90vw;top:14vh}
+.hero-cubes-bg .cube:nth-child(5){animation-delay:8s;left:10vw;top:82vh}
+.hero-cubes-bg .cube:nth-child(6){animation-delay:10s;left:50vw;top:12vh}
+@keyframes cubeFloat{from{transform:scale(0) rotate(0deg) translate(-50%,-50%);opacity:.85}to{transform:scale(18) rotate(960deg) translate(-50%,-50%);opacity:0}}
+/* Layout con barra lateral tipo admin */
+.layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+.main-area{display:block}
+@media (max-width: 920px){.layout{grid-template-columns:1fr}.side-nav{display:none}}
+
+/* Side Nav (similar a admin) */
+.side-nav{background:#fff;border-right:1px solid var(--border);padding:18px 14px 14px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.side-nav .profile{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:14px}
+.side-nav .profile-image{width:96px;height:96px;border-radius:50%;overflow:hidden;border:2px solid #eef2f7;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.side-nav .profile-image img{width:100%;height:100%;object-fit:cover}
+.side-nav h3{margin:8px 0 2px 0;font-size:16px}
+.side-nav .role-badge{font-size:11px;background:#eef2f7;color:#425469;padding:4px 8px;border-radius:999px}
+.side-nav nav ul{list-style:none;padding:0;margin:10px 0 0}
+.side-nav nav ul li{margin:2px 0}
+.side-nav nav ul li a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:var(--text-color);text-decoration:none;border:1px solid transparent}
+.side-nav nav ul li a:hover{background:#f6f8fb;border-color:var(--border)}
+.side-nav nav ul li a.active{background:linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,0.2)}
+/* Header al estilo admin (tarjeta blanca con sombra ligera) */
+header{background:#fff;color:var(--text-color);padding:16px 24px;border-bottom:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,0.04);display:flex;align-items:center;justify-content:space-between;gap:16px}
+header .header-left{display:flex;flex-direction:column}
+header h1{margin:0;font-size:22px;letter-spacing:0.2px}
+header p{margin:6px 0 0;color:var(--text-secondary);font-size:13px}
+header .header-actions{margin-top:0;display:flex;gap:10px;align-items:center}
+header .header-actions .primary{background:linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);border:0;padding:8px 16px;border-radius:8px;color:#fff;font-weight:600;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(37,99,235,0.2)}
+header .header-actions .primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(37,99,235,0.3)}
+header .header-actions .primary:active{transform:translateY(1px)}
+header .header-actions .secondary{background:#f6f8fb;border:1px solid var(--border);padding:8px 16px;border-radius:8px;color:var(--text-color);font-weight:600;cursor:pointer;transition:all .2s}
+header .header-actions .secondary:hover{background:#eef2f7}
+header .header-actions .secondary:active{transform:translateY(1px)}
+/* Tabs de mensajes con badges */
+.messages-tabs{display:inline-flex;gap:6px;align-items:center}
+.messages-tab{position:relative}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 6px;background:#e11d48;color:#fff;border-radius:999px;font-size:11px;font-weight:700;margin-left:6px}
+.messages-tab.active{outline:2px solid var(--accent-color);background:#eef7ff}
+main{padding:0}
+.app-shell{display:flex;min-height:72vh}
+/* Sidebar como card del admin */
+.sidebar{width:300px;background:var(--card);border-right:1px solid var(--border);padding:16px;margin:0;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.side-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.side-header button{background:transparent;color:var(--primary);border:0;padding:8px 10px;border-radius:4px;font-weight:500}
+.side-header .controls{display:flex;gap:8px}
+.side-hint{font-size:12px;color:var(--text-secondary);margin-top:6px}
+.groups-list{list-style:none;padding:6px 2px;margin:0}
+.accordion-item{border-radius:6px;margin-bottom:8px;overflow:hidden;border:1px solid var(--border)}
+.accordion-item:hover{background:var(--bg)}
+.accordion-header{display:flex;align-items:center;justify-content:space-between;padding:12px;cursor:pointer;background:var(--card);border-radius:4px}
+.accordion-header .name{font-weight:700;color:var(--text-color)}
+.accordion-header .controls{display:flex;gap:8px}
+.accordion-header button{background:transparent;border:0;color:#7b8794;font-size:14px}
+.accordion-body{padding:12px;background:#fbfcfd;border-top:1px solid var(--border)}
+.student-line{display:flex;justify-content:space-between;padding:10px 6px;border-bottom:1px solid #eef5fb}
+.student-line .sname{font-weight:600}
+.student-line .smeta{color:var(--text-secondary);font-size:12px;margin-left:8px}
+.accordion-item.open{box-shadow:0 12px 30px rgba(12,40,80,0.08)}
+
+/* Animación para abrir todos los acordeones cuando se despliega */
+.accordion-item.open .accordion-body{animation:slideDown .22s ease forwards}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.panel{flex:1;padding:18px}
+.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.panel-header h2{margin:0;font-size:20px;color:var(--text-color)}
+.panel-actions button{background:var(--primary-color);border:0;padding:8px 16px;border-radius:8px;color:#fff;font-weight:600;box-shadow:0 2px 8px rgba(74,144,226,0.25)}
+.panel-body{background:var(--card);padding:20px;border-radius:10px;min-height:320px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.muted{color:var(--muted)}
+.student-item{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:4px;background:var(--bg);margin-bottom:8px}
+.student-item .left{display:flex;flex-direction:column}
+.student-item .name{font-weight:700;display:flex;align-items:center;gap:8px}
+.evaluate{display:flex;gap:8px;align-items:center}
+.evaluate input{width:80px;padding:6px 8px;border:1px solid var(--border);border-radius:8px}
+.evaluate button{padding:6px 12px;border-radius:8px;border:0;background:var(--primary-color);color:#fff;font-weight:600}
+/* score badge styles */
+.score-badge{display:inline-block;margin-left:8px;padding:3px 8px;border-radius:999px;font-weight:700;font-size:12px;color:#fff}
+.score-badge.empty{background:#cbd5e1;color:#475569}
+.score-badge.high{background:#16a34a}
+.score-badge.mid{background:#f59e0b}
+.score-badge.low{background:#ef4444}
+@media (max-width:700px){.app-shell{flex-direction:column}.sidebar{width:100%}}
+
+/* Avatar del maestro */
+.avatar{position:relative;width:72px;height:72px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.85);box-shadow:0 3px 10px rgba(0,0,0,0.12);cursor:pointer;flex-shrink:0;margin-left:8px}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar .avatar-overlay{position:absolute;inset:0;background:linear-gradient(transparent, rgba(0,0,0,0.35));opacity:0;display:flex;align-items:flex-end;justify-content:center;transition:opacity .2s}
+.avatar:hover .avatar-overlay{opacity:1}
+.avatar .camera{color:#fff;font-size:14px;margin-bottom:4px;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5))}
+
+/* Tabla (coincide con estilo admin) */
+.table th,.table td{background:#fff}
+.table th{font-weight:600;color:var(--text-color)}
+.table tr:hover{box-shadow:0 2px 8px rgba(0,0,0,0.06)}

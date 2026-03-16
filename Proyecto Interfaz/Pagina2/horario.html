@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horario Escolar</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .horario-cell {
+            min-width: 200px;
+            height: 80px;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+        .horario-cell:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .materia {
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .profesor {
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        .aula {
+            font-size: 0.8em;
+            color: #495057;
+        }
+        .hora {
+            font-weight: bold;
+            background-color: #e9ecef;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="animated-background-wrapper">
+        <ul class="floating-squares">
+            <li></li><li></li><li></li><li></li><li></li>
+            <li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Sistema Escolar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item d-none d-lg-block me-2">
+                        <span class="navbar-text small text-white-50" id="navbarStudentName"></span>
+                    </li>
+                    <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+                        <button id="logoutBtn" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-calendar-alt"></i> Horario Semestral</h5>
+                <div>
+                    <a href="index.html" class="btn btn-light btn-sm ms-2">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Sección de Clases Disponibles -->
+                <div class="mb-4">
+                    <h5 class="mb-3"><i class="fas fa-list"></i> Clases Disponibles para Inscripción</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="semestre-selector" class="form-label">Seleccionar Semestre:</label>
+                            <select id="semestre-selector" class="form-select">
+                                <option value="">-- Cargando semestres... --</option>
+                            </select>
+                            <small class="form-text text-muted">Los semestres se cargan automáticamente desde las clases disponibles</small>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button id="btn-cargar-disponibles" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Buscar Clases
+                            </button>
+                        </div>
+                    </div>
+                    <div id="clases-disponibles-container">
+                        <div class="alert alert-secondary">
+                            <i class="fas fa-arrow-up"></i> Seleccione un semestre y haga clic en "Buscar Clases" para ver las clases disponibles.
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Horario Inscrito -->
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle"></i> <strong>Nota:</strong> El estudiante elabora su propio horario de acuerdo a su promedio académico. Los estudiantes con mejor promedio tienen prioridad en la selección de grupos y horarios.
+                </div>
+                                <h5 class="mb-3"><i class="fas fa-calendar-check"></i> Mi Horario (Clases Inscritas)
+                                    <button class="btn btn-outline-secondary btn-sm ms-2" id="btn-export-pdf" title="Descargar PDF del horario"><i class="fas fa-file-pdf"></i> PDF</button>
+                                </h5>
+                                <div class="table-responsive" id="horario-captura">
+                                        <table class="table table-bordered" id="tabla-horario">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center">Hora</th>
+                                <th class="text-center">Lunes</th>
+                                <th class="text-center">Martes</th>
+                                <th class="text-center">Miércoles</th>
+                                <th class="text-center">Jueves</th>
+                                <th class="text-center">Viernes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="horario-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leyenda -->
+        <div class="card mt-3">
+            <div class="card-header bg-light">
+                <h6 class="mb-0"><i class="fas fa-info-circle"></i> Información</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6>Período Actual:</h6>
+                        <p>Agosto - Diciembre 2025</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Total de Materias:</h6>
+                        <p>6 materias</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Créditos:</h6>
+                        <p>24 créditos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <!-- Librerías para exportar a PDF preservando formato (captura del DOM) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNa5lCYbYI+JY9hw3rroWAtxEvsC0BpvyEukgqS0bkkCm1cWg5kybkADVY6jwxKF1u9IiMaivGi99Z+eK6Ff7Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-v/34yJdZrloEwuBsBtWDyt41FrV6eI2GJrivPgSJMkOVYQ+GmOkN9RnBbTK1ZBOqVakiobP6KyHRcYGTWXH/VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/main.js"></script>
+    
+    <script>
+    // Variables globales
+        let estudianteId = null;
+
+        // Inicializar al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            const userSession = JSON.parse(sessionStorage.getItem('user') || '{}');
+            estudianteId = userSession.id;
+
+            if (!estudianteId) {
+                alert('No se encontró información de sesión. Redirigiendo al login...');
+                window.location.href = '../Pagina1/index.html';
+                return;
+            }
+
+            // Navbar: nombre y logout
+            try {
+                const u = JSON.parse(sessionStorage.getItem('user')||'{}');
+                if (u && u.nombre && document.getElementById('navbarStudentName')) {
+                    document.getElementById('navbarStudentName').textContent = `Hola, ${u.nombre}`;
+                }
+            } catch(_) {}
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) logoutBtn.addEventListener('click', () => { sessionStorage.clear(); window.location.href = '/Pagina1/index.html'; });
+
+            // Cargar semestres disponibles
+            cargarSemestres();
+
+            // Cargar horario inscrito
+            cargarHorarioInscrito();
+
+            // Event listeners
+            document.getElementById('btn-cargar-disponibles').addEventListener('click', cargarClasesDisponibles);
+        });
+
+        // Cargar semestres desde la base de datos
+        async function cargarSemestres() {
+            try {
+                const response = await fetch('/api/semestres');
+                const data = await response.json();
+
+                if (data.ok && data.semestres && data.semestres.length > 0) {
+                    const selector = document.getElementById('semestre-selector');
+                    // Limpiar opciones existentes excepto la primera
+                    selector.innerHTML = '<option value="">-- Seleccione un semestre --</option>';
+                    
+                    // Limpiar, deduplicar y descartar valores sólo numéricos (1,2,3...)
+                    const semestresLimpios = Array.from(new Set(data.semestres))
+                        .map(s => String(s).trim())
+                        .filter(s => !/^\d+$/.test(s));
+
+                    // Agregar semestres dinámicamente (formateados)
+                    semestresLimpios.forEach(semestre => {
+                        const option = document.createElement('option');
+                        option.value = semestre; // mantener valor original para API
+                        option.textContent = formatearSemestre(semestre);
+                        selector.appendChild(option);
+                    });
+                    
+                    // Si aún no hay opciones útiles, dejar el selector con la opción por defecto
+                }
+            } catch (error) {
+                console.error('Error al cargar semestres:', error);
+                // Si falla, dejar las opciones por defecto
+            }
+        }
+
+        // Convierte formatos tipo "2025-2 (Agosto-Diciembre)" o "O2025" a etiqueta legible
+        function formatearSemestre(raw) {
+            if (!raw) return '';
+            const s = String(raw);
+            // Caso: "2025-2 (Agosto-Diciembre)" -> "2025 Agosto - Diciembre"
+            const m = s.match(/^(\d{4})[-_](\d)\s*\(([^)]+)\)/);
+            if (m) {
+                const year = m[1];
+                const rango = m[3].replace(/\s*-\s*/,' - ');
+                return `${year} ${rango}`;
+            }
+            // Caso: códigos cortos tipo "O2025" (Otoño), "P2025" (Primavera)
+            const estaciones = { 'O':'Agosto - Diciembre', 'P':'Enero - Junio', 'V':'Verano' };
+            const m2 = s.match(/^([A-Z])(\d{4})$/);
+            if (m2 && estaciones[m2[1]]) {
+                return `${m2[2]} ${estaciones[m2[1]]}`;
+            }
+            // Caso: ya texto
+            return s
+                .replace(/\(/g,'')
+                .replace(/\)/g,'')
+                .replace(/-/g,' - ')
+                .replace(/\s+/g,' ') // normalizar espacios
+                .trim();
+        }
+
+        // Cargar clases disponibles
+        async function cargarClasesDisponibles() {
+            const semestre = document.getElementById('semestre-selector').value;
+            const container = document.getElementById('clases-disponibles-container');
+
+            if (!semestre) {
+                container.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i> Por favor seleccione un semestre.
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mt-2">Cargando clases disponibles...</p>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`/api/clases/disponibles?semestre=${encodeURIComponent(semestre)}`);
+                const data = await response.json();
+
+                if (!data.ok) {
+                    throw new Error(data.error || 'Error al cargar clases');
+                }
+
+                if (data.clases.length === 0) {
+                    container.innerHTML = `
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> No hay clases disponibles para el semestre ${semestre}.
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Renderizar clases disponibles
+                let html = '<div class="row g-3">';
+                data.clases.forEach(clase => {
+                    html += `
+                        <div class="col-md-6">
+                            <div class="card h-100 border-primary">
+                                <div class="card-body">
+                                    <h6 class="card-title text-primary">
+                                        <i class="fas fa-book"></i> ${clase.nombre}
+                                    </h6>
+                                    <p class="mb-1"><strong>Código:</strong> ${clase.codigo}</p>
+                                    <p class="mb-1"><strong>Profesor:</strong> ${clase.profesor_nombre || 'No asignado'}</p>
+                                    <p class="mb-1"><strong>Horario:</strong> ${clase.horario || 'Por definir'}</p>
+                                    <p class="mb-1">
+                                        <strong>Cupo:</strong> 
+                                        <span class="badge ${clase.cupo_disponible > 5 ? 'bg-success' : 'bg-warning'}">
+                                            ${clase.cupo_disponible} disponibles de ${clase.cupo_maximo}
+                                        </span>
+                                    </p>
+                                    ${clase.descripcion ? `<p class="text-muted small mb-2">${clase.descripcion}</p>` : ''}
+                                    <button class="btn btn-primary btn-sm w-100" onclick="inscribirEnClase(${clase.id}, '${semestre}')">
+                                        <i class="fas fa-user-plus"></i> Inscribirse
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+
+            } catch (error) {
+                console.error('Error:', error);
+                container.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i> Error al cargar clases: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Inscribir en una clase
+        async function inscribirEnClase(claseId, semestre) {
+            if (!confirm('¿Estás seguro de que deseas inscribirte en esta clase?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/inscripciones', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        estudiante_id: estudianteId,
+                        clase_id: claseId,
+                        semestre: semestre
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!data.ok) {
+                    throw new Error(data.error || 'Error al inscribirse');
+                }
+
+                alert(data.message);
+                
+                // Recargar clases disponibles y horario inscrito
+                cargarClasesDisponibles();
+                cargarHorarioInscrito();
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al inscribirse: ' + error.message);
+            }
+        }
+
+        // Cargar horario de clases inscritas
+        async function cargarHorarioInscrito() {
+            try {
+                const response = await fetch(`/api/estudiantes/${estudianteId}/inscripciones`);
+                const data = await response.json();
+
+                if (!data.ok) {
+                    throw new Error(data.error || 'Error al cargar horario');
+                }
+
+                // Mostrar mensaje si no hay inscripciones
+                if (data.inscripciones.length === 0) {
+                    document.getElementById('horario-body').innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="fas fa-info-circle"></i> No tienes clases inscritas aún. 
+                                Selecciona un semestre arriba para ver clases disponibles.
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                // Renderizar horario en cuadrícula (Lunes - Viernes, por horas)
+                await renderHorarioGrid();
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('horario-body').innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center text-danger py-4">
+                            <i class="fas fa-exclamation-circle"></i> Error al cargar horario: ${error.message}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Construye horario en cuadrícula usando endpoint granular
+        async function renderHorarioGrid() {
+            const tbody = document.getElementById('horario-body');
+            tbody.innerHTML = '';
+
+            // Obtener entradas de horario (con clase_id e inscripcion_id)
+            const resp = await fetch(`/api/estudiantes/${estudianteId}/horario`);
+            const data = await resp.json();
+            if (!data.ok) throw new Error(data.error || 'Error al cargar horario');
+
+            const entries = data.horario || [];
+
+            // Definir rango horario (07:00 a 20:00)
+            const startHour = 7;
+            const endHour = 20;
+            const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+
+            // Mapa rápido por día -> lista de clases
+            const byDay = {};
+            days.forEach(d => byDay[d] = []);
+            entries.forEach(e => {
+                if (byDay[e.dia]) byDay[e.dia].push(e);
+            });
+
+            // Generar filas por cada hora
+            for (let h = startHour; h < endHour; h++) {
+                const tr = document.createElement('tr');
+                const th = document.createElement('th');
+                th.className = 'hora text-center align-middle';
+                th.style.width = '100px';
+                th.textContent = `${pad(h)}:00 - ${pad(h+1)}:00`;
+                tr.appendChild(th);
+
+                days.forEach(day => {
+                    const td = document.createElement('td');
+                    td.className = 'horario-cell align-top';
+
+                    // Buscar clases que inician dentro de esta hora
+                    const classesInHour = (byDay[day] || []).filter(e => {
+                        const inicioH = parseInt((e.inicio || '00:00:00').slice(0,2), 10);
+                        return inicioH === h;
+                    });
+
+                    if (classesInHour.length > 0) {
+                        classesInHour.forEach(e => {
+                            const div = document.createElement('div');
+                            div.className = 'p-2 mb-2 border rounded';
+                            div.style.background = '#eef6ff';
+                            div.innerHTML = `
+                                <div class="materia">${escapeHtml(e.materia)}</div>
+                                <div class="profesor">${escapeHtml(e.profesor || '')}</div>
+                                <div class="aula">${escapeHtml(e.aula || '')}</div>
+                                <div class="text-muted small">${formatTime(e.inicio)} - ${formatTime(e.fin)}</div>
+                                <button class="btn btn-sm btn-outline-danger mt-1" onclick="quitarClase(${e.inscripcion_id})">
+                                    <i class="fas fa-trash"></i> Quitar
+                                </button>
+                            `;
+                            td.appendChild(div);
+                        });
+                    } else {
+                        td.innerHTML = '<span class="text-muted small">—</span>';
+                    }
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            }
+        }
+
+        function pad(n){ return String(n).padStart(2,'0'); }
+        function formatTime(t){ return (t||'').slice(0,5); }
+        function escapeHtml(str){ return (str||'').replace(/[&<>"']/g, s=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[s])); }
+
+        // Quitar clase (cancelar inscripción)
+        async function quitarClase(inscripcionId){
+            if (!inscripcionId) return;
+            if (!confirm('¿Deseas quitar esta clase de tu horario?')) return;
+            try {
+                const res = await fetch(`/api/inscripciones/${inscripcionId}`, { method: 'DELETE' });
+                const data = await res.json();
+                if (!data.ok) throw new Error(data.error || 'No se pudo cancelar');
+                // Refrescar disponibilidad y horario
+                const semestreSel = document.getElementById('semestre-selector').value;
+                if (semestreSel) await cargarClasesDisponibles();
+                await renderHorarioGrid();
+            } catch (err) {
+                alert('Error al quitar clase: ' + err.message);
+            }
+        }
+
+                // =============================
+                // Exportar horario a PDF (mantener formato visual)
+                // =============================
+                document.getElementById('btn-export-pdf')?.addEventListener('click', async ()=>{
+                    const cont = document.getElementById('horario-captura');
+                    if (!cont){ alert('No se encontró el contenedor del horario'); return; }
+                    // Asegurar que el horario ya está construido
+                    if (!document.getElementById('horario-body') || document.getElementById('horario-body').children.length === 0){
+                        await cargarHorarioInscrito();
+                    }
+                    // Verificar / cargar librerías en caso de fallo inicial
+                    await ensurePdfLibs();
+                    if (!window.html2canvas || !(window.jspdf||window.jsPDF)){
+                        alert('Faltan librerías para exportar PDF (no se pudieron cargar)'); return;
+                    }
+                    try {
+                        const originalScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                        // Aumentar escala para mejor nitidez
+                        const canvas = await html2canvas(cont, { scale: 2, useCORS: true, backgroundColor: '#ffffff' });
+                        const imgData = canvas.toDataURL('image/png');
+                        const jsPDFNamespace = window.jspdf || { jsPDF: window.jsPDF };
+                        const { jsPDF } = jsPDFNamespace;
+                        // Determinar orientación basada en proporción
+                        const w = canvas.width;
+                        const h = canvas.height;
+                        const orientation = w > h ? 'landscape' : 'portrait';
+                        const pdf = new jsPDF({ orientation, unit: 'pt', format: 'a4' });
+                        const pageW = pdf.internal.pageSize.getWidth();
+                        const pageH = pdf.internal.pageSize.getHeight();
+                        // Ajustar imagen manteniendo proporción dentro de página
+                        const ratio = Math.min(pageW / w, pageH / h);
+                        const imgW = w * ratio;
+                        const imgH = h * ratio;
+                        const x = (pageW - imgW) / 2;
+                        const y = 24; // margen superior
+                        pdf.addImage(imgData, 'PNG', x, y, imgW, imgH, undefined, 'FAST');
+                        pdf.setFontSize(10);
+                        pdf.text('Horario generado el ' + new Date().toLocaleString(), 40, pageH - 30);
+                        pdf.save('horario.pdf');
+                        // Restaurar scroll
+                        window.scrollTo({ top: originalScrollTop });
+                    } catch (err) {
+                        console.error('Error exportando PDF:', err);
+                        alert('No se pudo generar el PDF: ' + err.message);
+                    }
+                });
+
+                // Carga dinámica de librerías si no están presentes
+                async function ensurePdfLibs(){
+                    const needHtml2Canvas = !window.html2canvas;
+                    const needJsPDF = !(window.jspdf||window.jsPDF);
+                    if (!needHtml2Canvas && !needJsPDF) return;
+                    const loaders = [];
+                    if (needHtml2Canvas){
+                        loaders.push(loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'));
+                    }
+                        if (needJsPDF){
+                        loaders.push(loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'));
+                    }
+                    try { await Promise.all(loaders); } catch(e){ console.warn('Fallo cargando alguna librería PDF', e); }
+                }
+                function loadScript(src){
+                    return new Promise((resolve,reject)=>{
+                        const s = document.createElement('script');
+                        s.src = src; s.async = true;
+                        s.onload = ()=>resolve();
+                        s.onerror = ()=>reject(new Error('Error cargando '+src));
+                        document.head.appendChild(s);
+                    });
+                }
+    </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Profesores - Administrador Escolar</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <div class="profile-image" style="cursor: pointer;" id="profileImageContainer" title="Clic para cambiar foto">
+                <img src="https://via.placeholder.com/110" alt="Admin Profile" id="adminProfileImage">
+            </div>
+            <h3 id="adminName">Administrador</h3>
+            <span class="role-badge">Administrador del Sistema</span>
+            <input type="file" id="fotoInput" accept="image/*" style="display: none;">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="estudiantes.html"><i class="fas fa-user-graduate"></i> Estudiantes</a></li>
+                <li><a href="profesores.html" class="active"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
+                <li><a href="clases.html"><i class="fas fa-book-open"></i> Clases</a></li>
+                <li><a href="planes-estudio.html"><i class="fas fa-graduation-cap"></i> Planes de Estudio</a></li>
+                <li><a href="mensajes.html"><i class="fas fa-envelope"></i> Mensajes</a></li>
+                
+                
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <header>
+            <h2>Profesores</h2>
+            <div class="header-right">
+                <span class="date">22 de octubre, 2025</span>
+                <button class="profile-btn">Mi Perfil</button>
+                <button class="profile-btn" id="adminLogoutBtn" title="Cerrar sesión">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <div class="actions-bar">
+            <button class="action-btn" id="newTeacherBtn"><i class="fas fa-plus"></i> Nuevo Profesor</button>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar profesor...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+            <button class="action-btn" id="sendMessageTeachersBtn" style="background:#1e88e5;color:#fff;"><i class="fas fa-bullhorn"></i> Enviar mensaje a profesores</button>
+        </div>
+
+        <div class="teachers-grid card">
+            <div style="padding: 0.5rem 0.25rem;">
+            <table class="students-table teachers-table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Departamento</th>
+                        <th>Especialidad</th>
+                        <th>Grado Académico</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="profesores-tbody">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 2rem;">
+                            Cargando profesores...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <button><i class="fas fa-chevron-left"></i></button>
+            <span class="page-number active">1</span>
+            <span class="page-number">2</span>
+            <span class="page-number">3</span>
+            <button><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <!-- Modal para nuevo profesor -->
+        <div id="teacherModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Nuevo Profesor</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body card">
+                    <form id="teacherForm">
+                        <input type="hidden" id="profesor_id" name="profesor_id">
+                        <div class="form-group">
+                            <label for="codigo_profesor">Código del Profesor *</label>
+                            <input type="text" id="codigo_profesor" name="codigo_profesor" required placeholder="Ej: PROF001">
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Nombre Completo *</label>
+                            <input type="text" id="nombre" name="nombre" required placeholder="Nombre completo del profesor">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="correo">Correo Electrónico</label>
+                                <input type="email" id="correo" name="correo" placeholder="correo@ejemplo.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="telefono">Teléfono</label>
+                                <input type="tel" id="telefono" name="telefono" placeholder="(999) 123-4567">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="departamento">Departamento</label>
+                                <select id="departamento" name="departamento">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Ciencias">Ciencias</option>
+                                    <option value="Humanidades">Humanidades</option>
+                                    <option value="Tecnología">Tecnología</option>
+                                    <option value="Artes">Artes</option>
+                                    <option value="Matemáticas">Matemáticas</option>
+                                    <option value="Ingeniería">Ingeniería</option>
+                                    <option value="Administración">Administración</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="area">Área (Especialidad) *</label>
+                                <select id="area" name="area" required>
+                                    <option value="">Selecciona un área...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="grado_academico">Grado Académico</label>
+                                <select id="grado_academico" name="grado_academico">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Licenciatura">Licenciatura</option>
+                                    <option value="Maestría">Maestría</option>
+                                    <option value="Doctorado">Doctorado</option>
+                                    <option value="Posdoctorado">Posdoctorado</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="materia">Materia Principal *</label>
+                                <select id="materia" name="materia" required>
+                                    <option value="">Selecciona materia según área...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="estado">Estado</label>
+                            <select id="estado" name="estado">
+                                <option value="activo" selected>Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                        <div id="form-message" style="margin-top: 1rem; padding: 0.5rem; border-radius: 4px; display: none;"></div>
+                        <div class="form-actions">
+                            <button type="button" class="cancel-btn">Cancelar</button>
+                            <button type="submit" class="save-btn">Guardar Profesor</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+                <!-- Modal enviar mensaje a profesores -->
+                <div id="adminTeachersMessageModal" class="modal" style="display:none;">
+                    <div class="modal-content" style="max-width:640px;">
+                        <div class="modal-header">
+                            <h3>Mensaje para Profesores</h3>
+                            <button class="close-btn" id="closeAdminTeachersMsg">&times;</button>
+                        </div>
+                        <div class="modal-body card" style="max-height:70vh; overflow:auto;">
+                            <form id="adminTeachersMsgForm">
+                                <div class="form-group">
+                                    <label for="msgTitulo">Título *</label>
+                                    <input type="text" id="msgTitulo" required maxlength="200" placeholder="Ej: Junta académica viernes" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="msgContenido">Contenido *</label>
+                                    <textarea id="msgContenido" required maxlength="3000" placeholder="Detalle del mensaje para los profesores" style="min-height:140px;"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Destinatarios</label>
+                                    <div style="margin:.5rem 0;">
+                                        <label style="display:inline-flex;align-items:center;gap:6px;margin-right:14px;font-size:.9rem;">
+                                            <input type="radio" name="destinoProf" value="todos" checked /> Todos los profesores
+                                        </label>
+                                        <label style="display:inline-flex;align-items:center;gap:6px;font-size:.9rem;">
+                                            <input type="radio" name="destinoProf" value="seleccion" /> Selección manual
+                                        </label>
+                                    </div>
+                                    <div id="profesoresSeleccion" style="display:none; border:1px solid #ddd; padding:.75rem; border-radius:6px; max-height:220px; overflow:auto; background:#fafafa;">
+                                        <div class="muted" id="loadingProfesSel">Cargando listado...</div>
+                                        <div id="profesoresChecks" style="display:none;"></div>
+                                    </div>
+                                </div>
+                                <div class="form-actions" style="margin-top:1rem; display:flex; justify-content:flex-end; gap:10px;">
+                                    <button type="button" class="cancel-btn" id="cancelAdminTeachersMsg">Cancelar</button>
+                                    <button type="submit" class="save-btn" style="background:#1e88e5;">Enviar mensaje</button>
+                                </div>
+                                <div id="adminTeachersMsgFeedback" style="display:none; margin-top:10px; padding:8px; border-radius:6px; font-size:.85rem;"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+    </main>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="shared-admin.js"></script>
+    <script src="profesores.js"></script>
+</body>
+</html>

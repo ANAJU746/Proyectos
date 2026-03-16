@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avisos del Profesor</title>
+  <link rel="icon" type="image/png" href="../imagen/Logo.png">
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .page-wrap { max-width: 1100px; margin: 30px auto; padding: 16px; }
+    .card { background: #fff; border-radius: 14px; padding: 16px; box-shadow: var(--shadow-md, 0 10px 30px rgba(0,0,0,.08)); margin-bottom: 18px; }
+    .section-title { font-size: 20px; font-weight: 700; margin: 0 0 8px; color: #1f3147; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    label { font-weight: 600; color: #2c3e50; font-size: 13px; }
+    input[type="text"], textarea, select, input[type="datetime-local"] { width: 100%; padding: 10px 12px; border: 1px solid #e1e6ef; border-radius: 10px; outline: none; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    textarea { resize: vertical; min-height: 110px; }
+    .muted { color: #64748b; font-size: 12px; }
+    .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px; }
+    .btn { border: 0; border-radius: 10px; padding: 10px 14px; font-weight: 600; cursor: pointer; }
+    .btn-primary { background: #4a90e2; color: white; }
+    .btn-light { background: #ebf2fb; color: #1f3147; }
+    .hidden { display: none; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+    .badge-green { background: #e6f7ef; color: #0b7a45; }
+    .badge-orange { background: #fff3e6; color: #a15c00; }
+    .badge-gray { background: #eef2f7; color: #425469; }
+    .aviso-item { border: 1px solid #eef2f7; border-radius: 12px; padding: 12px; margin-top: 10px; }
+    .aviso-header { display:flex; justify-content: space-between; align-items:center; }
+    .aviso-title { font-weight: 700; color: #1f3147; margin: 0; }
+    .aviso-meta { font-size: 12px; color: #64748b; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <div class="card">
+      <h2 class="section-title">Crear aviso</h2>
+      <div class="row">
+        <div>
+          <label for="titulo">Título</label>
+          <input id="titulo" type="text" maxlength="200" placeholder="Ej. Recordatorio de entrega" />
+        </div>
+        <div>
+          <label for="fecha_programada">Fecha programada (opcional)</label>
+          <input id="fecha_programada" type="datetime-local" />
+          <div class="muted">Si la dejas vacía, el aviso se publica inmediatamente.</div>
+        </div>
+      </div>
+      <div style="margin-top: 10px;">
+        <label for="contenido">Contenido</label>
+        <textarea id="contenido" maxlength="5000" placeholder="Escribe el mensaje para tus estudiantes..."></textarea>
+      </div>
+      <div style="margin-top: 10px;">
+        <label>Destino</label>
+        <div style="display:flex; gap:16px; align-items:center; margin-top:6px;">
+          <label><input type="radio" name="target" value="general" checked /> General</label>
+          <label><input type="radio" name="target" value="clase" /> Por clase</label>
+          <label><input type="radio" name="target" value="estudiante" /> Por estudiante</label>
+        </div>
+      </div>
+      <div id="destino-clases" class="hidden" style="margin-top: 8px;">
+        <label for="clase_ids">Selecciona clases</label>
+        <select id="clase_ids" multiple size="5"></select>
+        <div class="muted">Mantén presionadas Ctrl o Shift para selección múltiple.</div>
+      </div>
+      <div id="destino-estudiantes" class="hidden" style="margin-top: 8px;">
+        <label for="estudiante_ids">Selecciona estudiantes</label>
+        <select id="estudiante_ids" multiple size="8"></select>
+        <div class="muted">Los estudiantes se cargan de tus clases activas.</div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-light" id="btn-limpiar">Limpiar</button>
+        <button class="btn btn-primary" id="btn-enviar">Enviar aviso</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Mis avisos</h2>
+      <div id="lista-avisos"></div>
+    </div>
+  </div>
+
+  <script src="./avisos.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensajes - Administrador Escolar</title>
+  <link rel="icon" type="image/png" href="../imagen/Logo.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="profile">
+      <div class="profile-image" style="cursor: pointer;" id="profileImageContainer" title="Clic para cambiar foto">
+        <img src="https://via.placeholder.com/110" alt="Admin Profile" id="adminProfileImage">
+      </div>
+      <h3 id="adminName">Administrador</h3>
+      <span class="role-badge">Administrador del Sistema</span>
+      <input type="file" id="fotoInput" accept="image/*" style="display: none;">
+    </div>
+    <nav>
+      <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="estudiantes.html"><i class="fas fa-user-graduate"></i> Estudiantes</a></li>
+        <li><a href="profesores.html"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
+        <li><a href="clases.html"><i class="fas fa-book-open"></i> Clases</a></li>
+        <li><a href="planes-estudio.html"><i class="fas fa-graduation-cap"></i> Planes de Estudio</a></li>
+        <li><a href="mensajes.html" class="active"><i class="fas fa-envelope"></i> Mensajes</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <main>
+    <header>
+      <h2>Mensajes de Recuperación</h2>
+      <div class="header-right">
+        <span class="date">--</span>
+        <button class="profile-btn">Mi Perfil</button>
+        <button class="profile-btn" id="adminLogoutBtn" title="Cerrar sesión">Cerrar Sesión</button>
+      </div>
+    </header>
+
+    <div class="actions-bar">
+      <div class="search-bar">
+        <select id="filtroEstado">
+          <option value="">Todos</option>
+          <option value="nuevo">Nuevos</option>
+          <option value="atendido">Atendidos</option>
+        </select>
+        <button id="refrescarBtn"><i class="fas fa-sync"></i> Actualizar</button>
+      </div>
+    </div>
+
+    <div class="card" style="padding:0.5rem 0.25rem;">
+      <table class="students-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Identificación</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Comentario</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones'</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyMensajes">
+          <tr><td colspan="9" style="text-align:center; padding:2rem;">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="shared-admin.js"></script>
+  <script src="mensajes.js"></script>
+</body>
+</html>

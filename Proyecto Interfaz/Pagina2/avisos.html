@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis Avisos</title>
+  <link rel="icon" type="image/png" href="../imagen/Logo.png">
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    .wrap { max-width: 1000px; margin: 28px auto; padding: 16px; }
+    .card { background:#fff; border-radius: 14px; padding: 16px; box-shadow: var(--shadow-md, 0 10px 30px rgba(0,0,0,.08)); margin-bottom: 18px; }
+    .item { border:1px solid #eef2f7; border-radius: 12px; padding: 12px; margin-top: 10px; cursor: pointer; transition: all 0.2s ease; }
+    .item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .item.programado { background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%); border-color: #ffd966; }
+    .item h3 { margin:0; font-weight: 700; color:#1f3147; }
+    .meta { color:#64748b; font-size: 12px; }
+    .badge { display:inline-block; padding:4px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+    .b-new { background:#e6f0ff; color:#1a4dc1; animation: pulse 2s infinite; }
+    .b-read { background:#e6f7ef; color:#0b7a45; }
+    .b-prog { background:#fff3e6; color:#a15c00; }
+    .empty { color:#64748b; }
+    .filters { display:flex; gap:8px; align-items:center; margin-bottom: 8px; }
+    .filters input { flex:1; padding:10px 12px; border:1px solid #e1e6ef; border-radius: 10px; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+    @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+  </style>
+</head>
+<body>
+  <div class="animated-background-wrapper">
+    <ul class="floating-squares">
+      <li></li><li></li><li></li><li></li><li></li>
+      <li></li><li></li><li></li><li></li><li></li>
+    </ul>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="filters">
+        <input id="q" type="text" placeholder="Buscar por título o contenido..." />
+      </div>
+      <div id="lista"></div>
+    </div>
+  </div>
+
+  <script src="./js/avisos.js"></script>
+</body>
+</html>

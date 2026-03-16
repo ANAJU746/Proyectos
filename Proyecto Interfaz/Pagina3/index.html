@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administradores - Sistema Escolar</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Fondo de partículas animadas -->
+    <div class="background">
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+        <div class="circle-container"><div class="circle"></div></div>
+    </div>
+
+    <!-- Header principal -->
+    <header class="main-header">
+        <div class="header-left">
+            <div class="logo-container">
+                <div class="logo-placeholder"></div>
+                <h1 class="university-name">Sistema Escolar</h1>
+            </div>
+        </div>
+        <div class="header-right">
+            <span class="admin-badge">
+                <i class="fas fa-user-shield"></i> Administrador
+            </span>
+        </div>
+    </header>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="admin-icon">
+                    <i class="fas fa-user-cog"></i>
+                </div>
+                <h2>Acceso Administrativo</h2>
+                <p>Ingresa tus credenciales para continuar</p>
+            </div>
+            
+            <form id="loginForm" onsubmit="return validateLogin(event)">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Usuario" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="Contraseña" required>
+                </div>
+                
+                <div class="remember-section">
+                    <label>
+                        <input type="checkbox" id="remember">
+                        <span>Recordar sesión</span>
+                    </label>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <span>Iniciar Sesión</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            
+            <div id="error-message" class="error-message"></div>
+            
+            <div class="support-section">
+                <a href="#" onclick="alert('Contacta al soporte técnico: soporte@escuela.edu'); return false;">
+                    <i class="fas fa-question-circle"></i>
+                    ¿Necesitas ayuda?
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Sistema Escolar - Acceso Administrativo</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+
+# 1. Ir a la carpeta del servidor
+cd "c:\Users\anat1\OneDrive - Instituto Tecnológico de Villahermosa\Tareas 5to semeste\Ingenieria de Software\Proyecto Interfaz\conexion"
+
+ cd conexion
+ 
+# 2. Iniciar servidor (usa npm.cmd)
+npm.cmd start
+
+# 3. URL para acceder al sistema
+http://localhost:3000/Pagina1/index.html
+
+

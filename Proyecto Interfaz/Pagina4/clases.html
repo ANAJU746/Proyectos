@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Clases - Administrador Escolar</title>
+    <link rel="icon" type="image/png" href="../imagen/Logo.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            <div class="profile-image" style="cursor: pointer;" id="profileImageContainer" title="Clic para cambiar foto">
+                <img src="https://via.placeholder.com/110" alt="Admin Profile" id="adminProfileImage">
+            </div>
+            <h3 id="adminName">Administrador</h3>
+            <span class="role-badge">Administrador del Sistema</span>
+            <input type="file" id="fotoInput" accept="image/*" style="display: none;">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="estudiantes.html"><i class="fas fa-user-graduate"></i> Estudiantes</a></li>
+                <li><a href="profesores.html"><i class="fas fa-chalkboard-teacher"></i> Profesores</a></li>
+                <li><a href="clases.html" class="active"><i class="fas fa-book-open"></i> Clases</a></li>
+                <li><a href="planes-estudio.html"><i class="fas fa-graduation-cap"></i> Planes de Estudio</a></li>
+                <li><a href="mensajes.html"><i class="fas fa-envelope"></i> Mensajes</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main>
+        <header>
+            <h2>Gestión de Clases</h2>
+            <div class="header-right">
+                <span class="date">22 de octubre, 2025</span>
+                <button class="profile-btn">Mi Perfil</button>
+                <button class="profile-btn" id="adminLogoutBtn" title="Cerrar sesión">Cerrar Sesión</button>
+            </div>
+        </header>
+
+        <div class="actions-bar">
+            <button class="action-btn" id="newClassBtn"><i class="fas fa-plus"></i> Nueva Clase</button>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar clase...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+
+        <div class="classes-grid card">
+            <div style="padding: 0.5rem 0.25rem;">
+            <table class="students-table classes-table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Materia</th>
+                        <th>Profesor</th>
+                        <th>Aula</th>
+                        <th>Horario</th>
+                        <th>Cupo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="clases-tbody">
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 2rem;">
+                            Cargando clases...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+        <!-- Modal para nueva clase -->
+        <div id="classModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Nueva Clase</h3>
+                    <button class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body card">
+                    <form id="classForm" class="class-form">
+                        <input type="hidden" id="clase_id">
+                        <div class="form-group">
+                            <label for="codigo">Código de la Clase *</label>
+                            <input type="text" id="codigo" name="codigo" required placeholder="Ej: MAT101">
+                        </div>
+                        <div class="form-group">
+                            <label for="area_id">Área *</label>
+                            <select id="area_id" name="area_id" required>
+                                <option value="">Seleccionar área...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="materia_id">Materia *</label>
+                            <select id="materia_id" name="materia_id" required>
+                                <option value="">Seleccionar materia...</option>
+                            </select>
+                            <small class="muted" style="display:block;margin-top:0.3rem;">Al elegir materia, se usará como nombre de la clase.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="profesor_id">Profesor Asignado *</label>
+                            <select id="profesor_id" name="profesor_id" required>
+                                <option value="">Seleccionar profesor...</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="aula">Aula</label>
+                                <input type="text" id="aula" name="aula" placeholder="Ej: A-101">
+                            </div>
+                            <div class="form-group">
+                                <label for="cupo_maximo">Cupo Máximo</label>
+                                <input type="number" id="cupo_maximo" name="cupo_maximo" min="1" max="100" value="30" placeholder="30">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="semestre">Semestre</label>
+                            <input type="text" id="semestre" name="semestre" placeholder="Ej: 2025-1">
+                        </div>
+                        <div class="schedule-section">
+                            <h4><i class="fas fa-clock"></i> Horarios de Clase</h4>
+                            <p class="muted" style="font-size: 0.9em; margin-bottom: 1rem;">Selecciona los días y horarios en que se imparte esta clase. Los profesores verán estos horarios en su panel.</p>
+                            <div class="schedule-grid">
+                                <div class="schedule-day">
+                                    <label>
+                                        <input type="checkbox" name="dia" value="Lunes"> Lunes
+                                    </label>
+                                    <div class="time-inputs">
+                                        <input type="time" class="time-start" disabled>
+                                        <span>a</span>
+                                        <input type="time" class="time-end" disabled>
+                                    </div>
+                                </div>
+                                <div class="schedule-day">
+                                    <label>
+                                        <input type="checkbox" name="dia" value="Martes"> Martes
+                                    </label>
+                                    <div class="time-inputs">
+                                        <input type="time" class="time-start" disabled>
+                                        <span>a</span>
+                                        <input type="time" class="time-end" disabled>
+                                    </div>
+                                </div>
+                                <div class="schedule-day">
+                                    <label>
+                                        <input type="checkbox" name="dia" value="Miércoles"> Miércoles
+                                    </label>
+                                    <div class="time-inputs">
+                                        <input type="time" class="time-start" disabled>
+                                        <span>a</span>
+                                        <input type="time" class="time-end" disabled>
+                                    </div>
+                                </div>
+                                <div class="schedule-day">
+                                    <label>
+                                        <input type="checkbox" name="dia" value="Jueves"> Jueves
+                                    </label>
+                                    <div class="time-inputs">
+                                        <input type="time" class="time-start" disabled>
+                                        <span>a</span>
+                                        <input type="time" class="time-end" disabled>
+                                    </div>
+                                </div>
+                                <div class="schedule-day">
+                                    <label>
+                                        <input type="checkbox" name="dia" value="Viernes"> Viernes
+                                    </label>
+                                    <div class="time-inputs">
+                                        <input type="time" class="time-start" disabled>
+                                        <span>a</span>
+                                        <input type="time" class="time-end" disabled>
+                                    </div>
+                                </div>
+                                <div class="schedule-day">
+                                    <label>
+                                        <input type="checkbox" name="dia" value="Sábado"> Sábado
+                                    </label>
+                                    <div class="time-inputs">
+                                        <input type="time" class="time-start" disabled>
+                                        <span>a</span>
+                                        <input type="time" class="time-end" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripción de la Clase</label>
+                            <textarea id="descripcion" name="descripcion" rows="3" placeholder="Descripción opcional de la clase"></textarea>
+                        </div>
+                        <div id="form-message" style="margin-top: 1rem; padding: 0.5rem; border-radius: 4px; display: none;"></div>
+                        <div class="form-actions">
+                            <button type="button" class="cancel-btn">Cancelar</button>
+                            <button type="submit" class="save-btn">Guardar Clase</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="shared-admin.js"></script>
+    <script src="clases.js"></script>
+</body>
+</html>

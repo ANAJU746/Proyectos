@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Clases - Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .result { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .error { background-color: #ffebee; border-color: #f44336; }
+        .success { background-color: #e8f5e9; border-color: #4caf50; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Test de APIs - Clases</h1>
+    
+    <button onclick="testAreas()">Test /api/areas</button>
+    <button onclick="testMaterias()">Test /api/materias-catalogo</button>
+    <button onclick="testProfesores()">Test /api/profesores</button>
+    <button onclick="testClases()">Test /api/clases</button>
+    
+    <div id="results"></div>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        async function testAreas() {
+            try {
+                results.innerHTML = '<div class="result">Cargando...</div>';
+                const res = await fetch('/api/areas');
+                const data = await res.json();
+                results.innerHTML = `
+                    <div class="result success">
+                        <h3>✅ /api/areas - Status: ${res.status}</h3>
+                        <p>Total áreas: ${data.ok ? data.areas.length : 'N/A'}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (err) {
+                results.innerHTML = `<div class="result error"><h3>❌ Error</h3><p>${err.message}</p></div>`;
+            }
+        }
+        
+        async function testMaterias() {
+            try {
+                results.innerHTML = '<div class="result">Cargando...</div>';
+                const res = await fetch('/api/materias-catalogo?area=Matemáticas');
+                const data = await res.json();
+                results.innerHTML = `
+                    <div class="result success">
+                        <h3>✅ /api/materias-catalogo - Status: ${res.status}</h3>
+                        <p>Total materias de Matemáticas: ${data.ok ? data.materias.length : 'N/A'}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (err) {
+                results.innerHTML = `<div class="result error"><h3>❌ Error</h3><p>${err.message}</p></div>`;
+            }
+        }
+        
+        async function testProfesores() {
+            try {
+                results.innerHTML = '<div class="result">Cargando...</div>';
+                const res = await fetch('/api/profesores');
+                const data = await res.json();
+                results.innerHTML = `
+                    <div class="result success">
+                        <h3>✅ /api/profesores - Status: ${res.status}</h3>
+                        <p>Total profesores: ${data.length}</p>
+                        <pre>${JSON.stringify(data.slice(0, 3), null, 2)}</pre>
+                    </div>
+                `;
+            } catch (err) {
+                results.innerHTML = `<div class="result error"><h3>❌ Error</h3><p>${err.message}</p></div>`;
+            }
+        }
+        
+        async function testClases() {
+            try {
+                results.innerHTML = '<div class="result">Cargando...</div>';
+                const res = await fetch('/api/clases');
+                const data = await res.json();
+                results.innerHTML = `
+                    <div class="result success">
+                        <h3>✅ /api/clases - Status: ${res.status}</h3>
+                        <p>Total clases: ${data.length}</p>
+                        <p>Primera clase: ${data[0]?.nombre || 'N/A'}</p>
+                        <p>Horarios: ${data[0]?.horarios?.length || 0}</p>
+                        <pre>${JSON.stringify(data[0], null, 2)}</pre>
+                    </div>
+                `;
+            } catch (err) {
+                results.innerHTML = `<div class="result error"><h3>❌ Error</h3><p>${err.message}</p></div>`;
+            }
+        }
+    </script>
+</body>
+</html>
