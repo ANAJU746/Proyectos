@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Eventos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Pacifico&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('fondo3.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #ece6e6; /* Cambiar el color de la letra a negro */
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column; /* Asegurar que el header esté en la parte superior */
+            align-items: center;
+            height: 100vh;
+        }
+        header {
+            background-color: #d32f2f;
+            color: #ffebee;
+            text-align: center;
+            padding: 1em 0;
+            font-size: 2em;
+            border-bottom: 4px solid #b71c1c;
+            animation: fadeInDown 1s;
+            width: 100%; /* Asegurar que el header ocupe todo el ancho */
+            position: fixed; /* Fijar el header en la parte superior */
+            top: 0;
+            left: 0;
+        }
+        .container {
+            max-width: 1000px; /* Hacer más grande el contenedor */
+            margin: auto; /* Centrar verticalmente */
+            padding: 2em; /* Aumentar el padding */
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            animation: fadeInUp 1s;
+            display: flex;
+            flex-direction: row;
+            align-items: center; /* Centrar los botones horizontalmente */
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #000; /* Cambiar el color del título a negro */
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 40%; /* Ajustar el ancho del contenedor de botones */
+            margin-right: 2em; /* Separar los botones de las imágenes */
+        }
+        .image-container {
+            width: 60%; /* Ajustar el ancho del contenedor de imágenes */
+            text-align: center;
+        }
+        .image-container img {
+            display: block; /* Mostrar la imagen predeterminada */
+            max-width: 100%;
+            border-radius: 8px;
+        }
+        button {
+            --c: #d32f2f;
+            color: var(--c);
+            font-size: 16px;
+            border: 0.3em solid var(--c);
+            border-radius: 0.5em;
+            width: 100%;
+            height: 3em;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-family: sans-serif;
+            letter-spacing: 0.1em;
+            text-align: center;
+            line-height: 3em;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: 0.5s;
+            margin-bottom: 1em; /* Separar más los botones */
+            background-color: transparent;
+        }
+        button span {
+            position: absolute;
+            width: 25%;
+            height: 100%;
+            background-color: var(--c);
+            transform: translateY(150%);
+            border-radius: 50%;
+            left: calc((var(--n) - 1) * 25%);
+            transition: 0.5s;
+            transition-delay: calc((var(--n) - 1) * 0.1s);
+            z-index: -1;
+        }
+        button:hover {
+            color: white;
+        }
+        button:hover span {
+            transform: translateY(0) scale(4); /* Aumentar el tamaño de la burbuja para llenar el botón */
+        }
+        button span:nth-child(1) {
+            --n: 1;
+        }
+        button span:nth-child(2) {
+            --n: 2;
+        }
+        button span:nth-child(3) {
+            --n: 3;
+        }
+        button span:nth-child(4) {
+            --n: 4;
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px); /* Ajustar el desplazamiento inicial */
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .boton {
+            animation: fadeInUp 0.8s ease-out; /* Hacer la animación más fluida */
+        }
+
+        .profile-icon {
+            position: fixed; /* Fijar en la esquina superior izquierda */
+            top: 1em;
+            left: 1em;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            z-index: 1000; /* Asegurar que esté encima de todo */
+        }
+
+        .profile-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .profile-icon:active {
+            animation: clickAnimation 0.3s ease-in-out; /* Animación al hacer clic */
+        }
+
+        @keyframes clickAnimation {
+            0% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        .fixed-buttons {
+            display: none; /* Ocultar inicialmente */
+            position: absolute;
+            top: 60px; /* Ajustar para que aparezca debajo de la imagen */
+            left: 0;
+            z-index: 1000;
+            flex-direction: column; /* Asegurar que los botones estén en columna */
+            gap: 0.5em; /* Separar los botones */
+        }
+
+        .profile-icon.active + .fixed-buttons {
+            display: flex; /* Mostrar como un menú desplegable */
+        }
+
+        .profile-button, .logout-button {
+            padding: 0.5em 1em;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 150px; /* Ajustar el ancho */
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <a href="javascript:void(0)" class="profile-icon" onclick="toggleProfileMenu()">
+        <img src="perfil1.png" alt="Perfil">
+    </a>
+    <div class="fixed-buttons">
+        <button class="profile-button" onclick="location.href='perfil.html'">
+            Ir a Perfil
+        </button>
+        <button class="logout-button" onclick="location.href='login.html'">
+            Cerrar Sesión
+        </button>
+    </div>
+    <header>
+        <h1>Gestión de Eventos</h1>
+    </header>
+    <div class="container">
+        <div class="button-container">
+            <button onmouseover="showImage('imagen1.jpg')" onmouseout="showImage('imagenmain.jpg')" onclick="location.href='crear_evento.html'">
+                Crear Evento
+                <span></span><span></span><span></span><span></span>
+            </button>
+            <button onmouseover="showImage('imagen2.jpg')" onmouseout="showImage('imagenmain.jpg')" onclick="location.href='ver_eventos.html'">
+                Ver Eventos
+                <span></span><span></span><span></span><span></span>
+            </button>
+            <button onmouseover="showImage('imagen3.jpg')" onmouseout="showImage('imagenmain.jpg')" onclick="location.href='actualizar_evento.html'">
+                Actualizar Evento
+                <span></span><span></span><span></span><span></span>
+            </button>
+            <button onmouseover="showImage('imagen4.jpg')" onmouseout="showImage('imagenmain.jpg')" onclick="location.href='estadisticas.html'">
+                Estadísticas
+                <span></span><span></span><span></span><span></span>
+            </button>
+        </div>
+        <div class="image-container">
+            <img id="image-preview" src="imagenmain.jpg" alt="Imagen de vista previa">
+        </div>
+    </div>
+    <script>
+        function showImage(src) {
+            const img = document.getElementById('image-preview');
+            img.src = src;
+        }
+
+        function toggleProfileMenu() {
+            const profileIcon = document.querySelector('.profile-icon');
+            const menu = document.querySelector('.fixed-buttons');
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        }
+    </script>
+</body>
+</html>

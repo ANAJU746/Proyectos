@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Evento</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Pacifico&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('fondo4.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #000;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+        header {
+            background-color: #d32f2f;
+            color: #ffebee;
+            text-align: center;
+            padding: 1em 0;
+            font-size: 2em;
+            border-bottom: 4px solid #b71c1c;
+            animation: fadeInDown 1s;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 2em auto;
+            padding: 2em;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            animation: fadeInUp 1s;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        .container h1 {
+            font-family: 'Pacifico', cursive;
+            color: #000;
+            margin-bottom: 1em;
+            position: absolute;
+            top: -1.5em;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 0 1em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #d32f2f;
+        }
+        .form-group {
+            margin-bottom: 1.5em;
+            animation: fadeIn 1s;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5em;
+            color: #000;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75em;
+            border: 1px solid #ccc; /* Borde inicial gris */
+            border-radius: 8px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            background: transparent; /* Mantener fondo transparente */
+            outline: none;
+            transition: 1s ease-in-out;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: #d32f2f; /* Cambiar borde a rojo */
+            outline: none; /* Quitar el borde negro */
+        }
+        input:focus::after, textarea:focus::after, select:focus::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #d32f2f; /* Línea roja */
+            transition: width 0.3s ease-in-out;
+        }
+        input:focus::after, textarea:focus::after, select:focus::after {
+            width: 100%; /* Expandir línea roja */
+        }
+        input span:nth-child(1), textarea span:nth-child(1), select span:nth-child(1) {
+            --n: 1;
+        }
+        input span:nth-child(2), textarea span:nth-child(2), select span:nth-child(2) {
+            --n: 2;
+        }
+        input span:nth-child(3), textarea span:nth-child(3), select span:nth-child(3) {
+            --n: 3;
+        }
+        input span:nth-child(4), textarea span:nth-child(4), select span:nth-child(4) {
+            --n: 4;
+        }
+        button {
+            background-color: #d32f2f;
+            color: white;
+            padding: 0.75em 1.5em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.3s;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+        button:hover {
+            background-color: #b71c1c;
+            transform: scale(1.05);
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes strokeAnimation {
+            from {
+                stroke-dasharray: 150 480;
+                stroke-dashoffset: 150;
+            }
+            to {
+                stroke-dashoffset: -480;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Crear Evento</h1>
+        <form>
+            <div class="form-group">
+                <label for="eventName">Nombre del Evento</label>
+                <input type="text" id="eventName" name="eventName" required>
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <div class="form-group">
+                <label for="eventDate">Fecha del Evento</label>
+                <input type="date" id="eventDate" name="eventDate" required>
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <div class="form-group">
+                <label for="eventDescription">Descripción del Evento</label>
+                <textarea id="eventDescription" name="eventDescription" rows="4" required></textarea>
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <div class="form-group">
+                <label for="eventType">Tipo de Evento</label>
+                <select id="eventType" name="eventType" required>
+                    <option value="conferencia">Conferencia</option>
+                    <option value="taller">Taller</option>
+                    <option value="seminario">Seminario</option>
+                    <option value="otro">Otro</option>
+                </select>
+                <span></span><span></span><span></span><span></span>
+            </div>
+            <button type="submit">Crear Evento</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Pacifico&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: url('fondo5.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #000; /* Cambiar el color de la letra a negro */
+            overflow-x: hidden;
+        }
+        header {
+            background-color: #d32f2f;
+            color: #ffebee;
+            text-align: center;
+            padding: 1em 0;
+            font-size: 2em;
+            border-bottom: 4px solid #b71c1c;
+            animation: fadeInDown 1s;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 1em;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            animation: fadeInUp 1s;
+        }
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #000; /* Cambiar el color del título a negro */
+        }
+        h2 {
+            color: #d32f2f;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+            animation: fadeIn 1s;
+        }
+        th, td {
+            padding: 0.75em;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #d32f2f;
+            color: white;
+        }
+        button {
+            background-color: #d32f2f;
+            color: white;
+            padding: 0.5em 1em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #b71c1c;
+            transform: scale(1.05);
+        }
+        .details {
+            display: none;
+            padding: 1em;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            margin-top: 1em;
+            animation: fadeInDetails 0.5s forwards;
+        }
+        .gooey-button {
+            display: inline-block;
+            text-align: center;
+            background: #d32f2f;
+            color: #ffebee;
+            font-weight: bold;
+            padding: 0.75em 1.5em;
+            line-height: 1;
+            border-radius: 1em;
+            position: relative;
+            min-width: 8.23em;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            margin-top: 1em;
+        }
+        .gooey-button:before,
+        .gooey-button:after {
+            width: 4.4em;
+            height: 2.95em;
+            position: absolute;
+            content: "";
+            display: inline-block;
+            background: #d32f2f; /* Asegurar que el color sea el mismo */
+            border-radius: 50%;
+            transition: transform 1s ease;
+            transform: scale(0);
+            z-index: -1;
+        }
+        .gooey-button:before {
+            top: -25%;
+            left: 20%;
+        }
+        .gooey-button:after {
+            bottom: -25%;
+            right: 20%;
+        }
+        .gooey-button:hover:before,
+        .gooey-button:hover:after {
+            transform: none;
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes fadeInDetails {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .hidden-svg {
+            visibility: hidden;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Eventos</h1>
+    </header>
+    <div class="container">
+        <h2>Lista de Eventos</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre del Evento</th>
+                    <th>Fecha</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="eventTableBody">
+                <!-- Filas de eventos generadas dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        // Ejemplo de datos de eventos
+        const eventos = [
+            { nombre: "Evento 1", tipo: "conferencia", fecha: "2023-10-01", descripcion: "Descripción del Evento 1" },
+            { nombre: "Evento 2", tipo: "taller", fecha: "2023-10-05", descripcion: "Descripción del Evento 2" },
+            // ...otros eventos...
+        ];
+
+        // Función para mostrar detalles del evento
+        function toggleDetails(index) {
+            const details = document.getElementById(`details-${index}`);
+            if (details.style.display === "none") {
+                details.style.display = "block";
+                details.style.animation = "fadeInDetails 0.5s forwards";
+            } else {
+                details.style.display = "none";
+            }
+        }
+
+        // Función para cargar eventos en la tabla
+        function cargarEventos() {
+            const tbody = document.getElementById("eventTableBody");
+            eventos.forEach((evento, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${evento.nombre}</td>
+                    <td>${evento.fecha}</td>
+                    <td>${evento.tipo}</td>
+                    <td><button class="gooey-button" onclick="toggleDetails(${index})">Ver Detalles</button></td>
+                `;
+                tbody.appendChild(row);
+
+                const detailsRow = document.createElement("tr");
+                detailsRow.innerHTML = `
+                    <td colspan="4">
+                        <div id="details-${index}" class="details">
+                            <h3>Descripción:</h3>
+                            <p>${evento.descripcion}</p>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(detailsRow);
+            });
+        }
+
+        cargarEventos();
+    </script>
+    <!-- Filtro Gooey -->
+    <svg class="hidden-svg" width="0" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1">
+        <defs>
+            <filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />    
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+            </filter>
+        </defs>
+    </svg>
+</body>
+</html>
